@@ -14,4 +14,4 @@ Workflow für alle Projektspezifischen Dateien
 Collaboratoren: 
  - Nils
  - Martin
- - Josia R. (s4004602)
+ - Josia (s4004602)
