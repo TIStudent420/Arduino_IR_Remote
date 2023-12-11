@@ -9,7 +9,7 @@ Workflow für alle Projektspezifischen Dateien
  - der Beleg
  - usw...
 
-->Projektplanung kann unter "Projekte" erledigt werden 
+->Projektplanung kann unter "Projekte" erledigt werden (https://github.com/users/TIStudent420/projects/2)
 
 Collaboratoren: 
  - Nils
