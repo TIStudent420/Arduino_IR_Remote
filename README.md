@@ -1,14 +1,15 @@
 # Arduino_IR_Remote
 
-Projekt: Erstellen einer Universellen IR-Fernbedinung mittel Arduino für die Steuerung von Haushaltsgeräten
+Projekt: Erstellen einer Universellen IR-Fernbedinung mittels Arduino für die Steuerung von Haushaltsgeräten
 
-Arbeitsplatz für alle Projektspezifischen Dateien
+Workflow für alle Projektspezifischen Dateien
  - der C-Code für die Arduinos
  - Schaltpläne
- - Projektpläne
  - Bilder
  - der Beleg
  - usw...
+
+->Projektplanung kann unter "Projekte" erledigt werden 
 
 Collaboratoren: 
  - Nils
