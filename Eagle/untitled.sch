@@ -548,9 +548,9 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <plain>
 </plain>
 <instances>
-<instance part="U1" gate="U1" x="-40.64" y="25.4" smashed="yes">
-<attribute name="NAME" x="-50.8" y="41.148" size="1.778" layer="95"/>
-<attribute name="VALUE" x="-50.8" y="5.08" size="1.778" layer="96"/>
+<instance part="U1" gate="U1" x="33.02" y="93.98" smashed="yes">
+<attribute name="NAME" x="22.86" y="109.728" size="1.778" layer="95"/>
+<attribute name="VALUE" x="22.86" y="73.66" size="1.778" layer="96"/>
 </instance>
 <instance part="FRAME1" gate="G$1" x="-68.58" y="-5.08" smashed="yes"/>
 <instance part="FRAME1" gate="G$2" x="104.14" y="-5.08" smashed="yes">
