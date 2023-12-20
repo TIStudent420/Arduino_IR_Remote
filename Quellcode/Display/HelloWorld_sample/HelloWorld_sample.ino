@@ -1,18 +1,8 @@
-//www.elegoo.com
-//2016.12.9
-
 /*
-  LiquidCrystal Library - Hello World
-
- Demonstrates the use a 16x2 LCD display.  The LiquidCrystal
- library works with all LCD displays that are compatible with the
- Hitachi HD44780 driver. There are many of them out there, and you
- can usually tell them by the 16-pin interface.
-
  This sketch prints "Hello World!" to the LCD
  and shows the time.
 
-  The circuit:
+  Anschlussplan:
  * LCD RS pin to digital pin 7
  * LCD Enable pin to digital pin 8
  * LCD D4 pin to digital pin 9
@@ -27,19 +17,6 @@
   *wiper to LCD VO pin (pin 3) 
 * A über 220k Ohm Widerstand zu 5V
 * K zu GND
-
- Library originally added 18 Apr 2008
- by David A. Mellis
- library modified 5 Jul 2009
- by Limor Fried (http://www.ladyada.net)
- example added 9 Jul 2009
- by Tom Igoe
- modified 22 Nov 2010
- by Tom Igoe
-
- This example code is in the public domain.
-
- http://www.arduino.cc/en/Tutorial/LiquidCrystal
  */
 
 // include the library code:
