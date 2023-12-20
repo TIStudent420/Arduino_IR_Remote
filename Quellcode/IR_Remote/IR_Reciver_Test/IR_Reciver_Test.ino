@@ -1,5 +1,16 @@
-//Arduino Empfänger Test
-
+// #Arduino Empfänger Test
+/*
+ * Anschlussplan am UNO R3:
+ *  5V -> auf Steckbrett
+ *  GND -> auf Steckbrett
+ *  IR_RECIVER:
+ *    - VCC (IR_Reciver) -> 5V (Steckbrett)
+ *    - GND (IR_Reciver) -> GND (Steckbrett)
+ *    - DatenPin (IR_Reciver) -> D2 (UNO)
+ *  Feedback LED:
+ *    - D5 (UNO) -> +LED- -> 220 Ohm Widerstand -> GND
+ *  
+*/
 #include <IRremote.h>
 
 #define IR_RECEIVE_PIN 2 //Pin am Arduino UNO für den IR Receiver

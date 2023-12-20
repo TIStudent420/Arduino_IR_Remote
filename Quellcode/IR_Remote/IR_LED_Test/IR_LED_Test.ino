@@ -1,3 +1,14 @@
+/* Anschlussplan
+ *  Sender mit Transistorschaltung (auf pro Micro - arduino leonardo):
+ *   Transistor NPN 2222:
+ *    - Emitter -> GND
+ *    - Basis -> 1KOhm -> D3 (Arduino)
+ *    - Kollektor -> 220Ohm -> -IR_LED+ -> 5V (VCC, Arduino)
+ *    
+ *   Feedback LED:
+ *    D10 (arduino) -> +LED- -> 330Ohm (optional veränderbar) -> GND 
+*/
+
 #import <IRremote.hpp>
 
 #define IR_SEND_PIN    3
