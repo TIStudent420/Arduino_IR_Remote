@@ -18,13 +18,16 @@ void setup() {
 
 void loop() {
   if (irrecv.decode(&results)) { //Wenn etwas gelesen wurde dann...
-    if (irrecv.getProtocolString() == "SONY") {
+      digitalWrite(RECV_FEED_PIN,HIGH);
+      delay(2);
+      digitalWrite(RECV_FEED_PIN,LOW);
+      
       unsigned long value  = results.value;
       //Ausgabe des Wertes auf die Serielle Schnittstelle.
-      Serial.println(char(value));
-      digitalWrite(RECV_FEED_PIN,HIGH);
-      delay(500);
-      digitalWrite(RECV_FEED_PIN,LOW);
+      Serial.print(char(value));
+      
+    if (irrecv.getProtocolString() == "SONY") {
+
     }
     irrecv.resume(); // auf den nächsten Wert warten
   }
