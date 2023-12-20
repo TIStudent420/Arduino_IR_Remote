@@ -34,7 +34,6 @@ void loop() {
     if (sRepeats > 4) {
         sRepeats = 4;
     }
-
     delay(1000);  // delay must be greater than 5 ms (RECORD_GAP_MICROS), otherwise the receiver sees it as one long signal
 
 }
