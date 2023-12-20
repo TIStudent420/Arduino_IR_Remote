@@ -8,8 +8,7 @@ void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
     irsend.begin(IR_SEND_PIN,true,INFR_FEEDBACK_PIN);
     
-
-    Serial.begin(0);
+    Serial.begin(9600);
 
     // Just to know which program is running on my Arduino
     Serial.println(F("START " __FILE__ " from " __DATE__ "\r\nUsing library version " VERSION_IRREMOTE));

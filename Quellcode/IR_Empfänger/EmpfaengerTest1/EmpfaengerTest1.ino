@@ -2,33 +2,39 @@
 
 #include <IRremote.h>
 
-#define IR_RECV_PIN 2 //Pin am Arduino UNO für den IR Receiver
-#define RECV_FEED_PIN 5
+#define IR_RECEIVE_PIN 2 //Pin am Arduino UNO für den IR Receiver
+#define IR_RECEIVE_FEEDBACK_LED 5
 
-IRrecv irrecv(IR_RECV_PIN); //Objekt initialisieren für die IR Übertragung
-decode_results results;
+IRrecv irrecv;
 
 void setup() {
-  pinMode(IR_RECV_PIN, INPUT);  //Den IR Pin als Eingang deklarieren.
+ 
   irrecv.enableIRIn(); //Den IR Pin aktivieren
   Serial.begin(9600); //Serielle kommunikation mit 9600 Baud beginnen.
-  pinMode(RECV_FEED_PIN,OUTPUT);
-  digitalWrite(RECV_FEED_PIN,LOW);
+
+  irrecv.begin(IR_RECEIVE_PIN, true,IR_RECEIVE_FEEDBACK_LED); //Pin zum enpfangen und für signal led initialisieren
+  printActiveIRProtocols(&Serial);
 }
 
 void loop() {
-  if (irrecv.decode(&results)) { //Wenn etwas gelesen wurde dann...
-      digitalWrite(RECV_FEED_PIN,HIGH);
-      delay(2);
-      digitalWrite(RECV_FEED_PIN,LOW);
+  if (irrecv.decode()) { //Wenn etwas gelesen wurde dann...
       
-      unsigned long value  = results.value;
-      //Ausgabe des Wertes auf die Serielle Schnittstelle.
-      Serial.print(char(value));
+      //Ausgabe über serielle Schnittstelle
+      irrecv.printIRResultShort(&Serial);
+      irrecv.printIRSendUsage(&Serial);
       
-    if (irrecv.getProtocolString() == "SONY") {
+      if (irrecv.decodedIRData.protocol == UNKNOWN) {
+        Serial.println(F("Received noise or an unknown (or not yet enabled) protocol"));
+        // We have an unknown protocol here, print more info
+        irrecv.printIRResultRawFormatted(&Serial, true);
+      }
+      
+      Serial.println();
 
-    }
+      
+    //if (irrecv.getProtocolString() == "SONY") {}  //auf Protokoll überprüfen
+    
     irrecv.resume(); // auf den nächsten Wert warten
+    
   }
 }
