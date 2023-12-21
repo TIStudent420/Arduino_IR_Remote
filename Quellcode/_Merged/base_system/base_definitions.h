@@ -10,9 +10,13 @@
   #define Pin_LCD_RS  5   // Display (LCD) 
   #define Pin_LCD_E   6   // Display (LCD)
   #define Pin_LCD_D4  7   // Display (LCD)
-  #define Pin_LCD_D5  8  // Display (LCD)
-  #define Pin_LCD_D6  9  // Display (LCD)
+  #define Pin_LCD_D5  8   // Display (LCD)
+  #define Pin_LCD_D6  9   // Display (LCD)
   #define Pin_LCD_D7  10  // Display (LCD)
+  #define Pin_IR_RECV 11  // IR Sensor (RECV)
+  #define Pin_IR_LED_FEEDBACK 0 // Signal-LED für das Empfangen von Daten
+  #define Pin_IR_LED  12  // IR Sender (LED)
+  #define Pin_IR_LED_FEEDBACK 1 // Signal-LED für das Senden von Daten
   #pragma message("Pins for Arduino UNO enabled") //Info in Kompielerausgabe, welches Board erkannt wurde
 #elif defined(__AVR_ATmega32U4__)  // Arduino Leonardo
   #error "Leonardo-Board: Pins noch nicht definiert"
