@@ -44,4 +44,11 @@ enum Display_Commands{
   Display_OK=2
 };
 
+enum Menues{
+  Funktion = 0,
+  Start = 1,
+  Senden = 2,
+  Empfangen = 3
+};
+
 #endif //BASE_DEFINITIONS_H

@@ -1,7 +1,7 @@
 #ifndef  IRREMOTE_RE_INPUT_CONTROL_HPP
 #define  IRREMOTE_RE_INPUT_CONTROL_HPP
 
-#import <Encoder.h> //Encoder-Bibliothek im Quellcode-Ordner
+#include <Encoder.h> //Encoder-Bibliothek im Quellcode-Ordner
 
 //RE = Rotary Encoder (Bauteilbezeichnung)
 class RE_Input_Control{

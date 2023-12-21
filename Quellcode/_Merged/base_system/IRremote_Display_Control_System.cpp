@@ -1,64 +1,88 @@
 #include <Arduino.h>
 #include "base_definitions.h"
 #include "IRremote_Display_Control_System.hpp"
-#include <LiquidCrystal.h>
-
 
 //Konstruktor implementieren
-Display_Control_System::Display_Control_System()
-  : current_Menu(1), cursor_Position(0), Menu_Index(0) {
-    Serial.println("Konstruktor_Diaplay");
+Display_Control_System::Display_Control_System(int rs_pin, int e_pin, int d4_pin, int d5_pin, int d6_pin, int d7_pin)
+  :lcd(rs_pin, e_pin, d4_pin, d5_pin, d6_pin, d7_pin) {
+
+  current_Menu = 1;
+  cursor_Position = 0;
+  Menu_Index = 0;
+
   // Initialisierung der Menü-Arrays
   MenuStart[0] = "Senden";
   MenuStart[1] = "Empfangen";
 
   MenuSenden[0] = "1";
   MenuSenden[1] = "2";
-  MenuSenden[2] = "3";
-  MenuSenden[3] = "4";
-  MenuSenden[4] = "5";
-  MenuSenden[5] = "6";
-  MenuSenden[6] = "7";
-  MenuSenden[7] = "8";
-  MenuSenden[8] = "9";
-  MenuSenden[9] = "10";
-  MenuSenden[10] = "Abbrechen";
+  MenuSenden[2] = "zurück";
 
-  MenuEmpfangen[0] = "Warte auf Signal...";
-  MenuEmpfangen[1] = "Signal Empfangen: ";
-  MenuEmpfangen[2] = "Speichern";
-  MenuEmpfangen[3] = "Abbrechen";
-
-  Menu4[0] = "Option1";
-  Menu4[1] = "Option2";
-
-  // Initialisierung der Werte-Liste mit Nullen
-  for (int i = 0; i < 10; ++i) {
-    values[i] = 0;
-  }
-  Serial.println(current_Menu);
-  Serial.println(Menu_Index);
-  Serial.println(cursor_Position);
-
+  MenuEmpfangen[0] = "1";
+  MenuEmpfangen[1] = "2";
+  MenuEmpfangen[0] = "3";
+  MenuEmpfangen[1] = "4";
+  MenuEmpfangen[3] = "zurück";
 }
-LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
 
-void Display_Control_System::init() {
-  Serial.println("init");
+
+void Display_Control_System::Init() {
   // set up the LCD's number of columns and rows:
   lcd.begin(16, 2);
   lcd.print("Hello, Munke!");
+  /* 1. Menü einlesen
+     ab index==0 darstellen (2-Zeilen) 
+     mit pfeil vorm ersten
+     --> Funktion: Show_Menu_at_Index(int index);
+  */
   Update_Display_Text();
 }
 
+/* 
+
+variablen:
+kurrent menue: enum... -> im konstrucktor initialisert
+kurrentz index: int...
+
+Kalsse menue_entry(bool vorgänger_oder_nachfolger,fkt(NULL) oder menue(enum), bezeichnung, wert, *Callback?)
+enum menue_entry //hier stehen alle Menue, die es gibt aufgelistet
+
+void Display_Control_System::load_menue(){
+  // switch (current_menue (enum))
+  //return *array
+}
+
+void Display_Control_System::Show_Menu_Index_DOWN(*menu_entry_array){
+  //aktueller_Index -> kontrollieren, ob dieser dem maximalen index entspricht (Methode zu berechnen der größe des Menu-Arrays?)
+  //-> falls nicht: inkrementiert den Index 
+}
+
+void Display_Control_System::Show_Menu_Index_UP(*menue_entry_array){
+  //aktueller_Index -> kontrollieren, ob dieser 0 ist
+  //-> falls nicht: inkrementiert aktuellen_Index 
+  Show_Menu_At_Index(aktueller_Index)
+}
+
+//dieser Funktion wir mit bereits überprüften Index aufgerufen
+void Display_Control_System::Show_Menu_At_Index(int index, *menu_entry_array){
+  // Display löschen / aktualisieren
+  // anzeigen : Menu-Array[index]
+  // &
+  // anzeigen : Menu-Array[index+1]
+}
+
+*/
+
 void Display_Control_System::control(Display_Commands cmd) {
-  Serial.println("control");
   switch (cmd) {
-    case Display_UP:
+    case Display_UP: //bedeutet menue index verringern
       {
-        Serial.println("UP");
+        Serial.println("UP"); 
+        /* Was passiert hier?, nach dem Befhel "UP"
+
+        */
         /* Cursor input Up */
-        if (Display_Control_System::cursor_Position = 1)
+        if (Display_Control_System::cursor_Position == 1)
           cursor_Position = 0;
         if (Display_Control_System::Menu_Index != 0)
           Menu_Index--;
@@ -66,10 +90,10 @@ void Display_Control_System::control(Display_Commands cmd) {
         Update_Display_Text();
         break;
       }
-    case Display_DOWN:
+    case Display_DOWN: //bedeutet menue index erhöhen
       {
         Serial.println("DOWN");
-        /* Cursor input Down */
+        /* Cursor input Down 
         if (Display_Control_System::cursor_Position = 0)
           cursor_Position = 1;
         if (Display_Control_System::current_Menu == 1 && Menu_Index == 2)
@@ -81,12 +105,12 @@ void Display_Control_System::control(Display_Commands cmd) {
         Display_Control_System::Menu_Index++;
         Update_Display_Text();
 
-        break;
+        break;*/
       }
-    case Display_OK:
+    case Display_OK: //bedeutet neue Funktionszuweisung (kann jedesmal eine andere FKT sein, die ausgeführt wird)
       {
         Serial.println("OK");
-        /* Cursor Input Ok*/
+        /* Cursor Input Ok
         switch (Display_Control_System::current_Menu) {
           case 1:
             if (Menu_Index == 0)
@@ -101,30 +125,39 @@ void Display_Control_System::control(Display_Commands cmd) {
         }
         Display_Control_System::cursor_Position = 0;
         Menu_Index = 0;
-        break;
+        break;*/
       }
     default:
       break;
   }
 }
+
 void Display_Control_System::Update_Values(int index, int value) {
-  Serial.println("Update_Values");
   // Überprüfe den Index, um sicherzustellen, dass er gültig ist
   if (index >= 0 && index < 10) {
     values[index] = value;
-    //std::cout << "Wert an Index " << index << " in der Liste aktualisiert." << std::endl;
   } else {
-    //std::cerr << "Ungültiger Index für die Werteaktualisierung." << std::endl;
     return -1;
   }
   return;
 }
+// Funktion zum Aktualisieren der Werte-Liste an einem bestimmten Index
+void Display_Control_System::UpdateValuesAtIndex(int index, int value) {
+  Update_Values(index, value);
+}
+
+int Display_Control_System::GetValueAtIndex(int index) {
+  // Überprüfe den Index, um sicherzustellen, dass er gültig ist
+  if (index >= 0 && index < 10) {
+    return values[index];
+  } else {
+    return -1;  // Hier könnte auch eine andere spezielle Rückgabewert verwendet werden
+  }
+}
 
 //Initialisieren der Menu und Cursor führung
-
-
 void Display_Control_System::Update_Display_Text() {
-  Serial.println("Update_Display_Text");
+
   switch (Display_Control_System::current_Menu) {
     case 1:
       if (Display_Control_System::cursor_Position = 0) {
@@ -168,19 +201,5 @@ void Display_Control_System::Update_Display_Text() {
       }
     default:
       break;
-  }
-}
-
-// Funktion zum Aktualisieren der Werte-Liste an einem bestimmten Index
-void Display_Control_System::UpdateValuesAtIndex(int index, int value) {
-  Update_Values(index, value);
-}
-
-int Display_Control_System::GetValueAtIndex(int index) {
-  // Überprüfe den Index, um sicherzustellen, dass er gültig ist
-  if (index >= 0 && index < 10) {
-    return values[index];
-  } else {
-    return -1;  // Hier könnte auch eine andere spezielle Rückgabewert verwendet werden
   }
 }

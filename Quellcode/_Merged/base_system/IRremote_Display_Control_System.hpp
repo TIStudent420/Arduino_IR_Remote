@@ -17,34 +17,33 @@
 * A über 220 Ohm Widerstand zu 5V
 * K zu GND
  */
-
+#include <LiquidCrystal.h>
 #include "base_definitions.h"
 
-class Display_Control_System{
-private:
-int current_Menu;
-    int Menu_Index;
-    int cursor_Position;
-    String MenuStart[2];
-    String MenuSenden[11];
-    String MenuEmpfangen[4];
-    String Menu4[2];
-    int values[10];
-
-    void Update_Values(int index, int value);
-
-
+class Display_Control_System {
 public:
-  Display_Control_System(); //Konstruktor
-  
-  void init(); //Initilisierungs funktion 
+  Display_Control_System(int rs_pin, int e_pin,int d4_pin,int d5_pin,int d6_pin,int d7_pin);  //Konstruktor
 
-  void control(Display_Commands cmd);
-
-  void Update_Display_Text();
+  void Init();  //Initilisierungs funktion
+  void control(Display_Commands cmd); //Reagiert auf Eingabe (hoch, runter, ok)
+  void Update_Display_Text(); //Textausgabe auf Display
 
   void UpdateValuesAtIndex(int index, int value);
   int GetValueAtIndex(int index);
+
+private:
+  LiquidCrystal lcd;  //Display-Klasse (Bibliothek)
+
+  int current_Menu;
+  int Menu_Index;
+  int cursor_Position;
+  String MenuStart[2];
+  String MenuSenden[11];
+  String MenuEmpfangen[4];
+  String Menu4[2];
+  int values[10];
+
+  void Update_Values(int index, int value);
 };
 
-#endif //IRremote_DISPLAY_CONTROO_SYSTEM_HPP
+#endif  //IRremote_DISPLAY_CONTROO_SYSTEM_HPP
