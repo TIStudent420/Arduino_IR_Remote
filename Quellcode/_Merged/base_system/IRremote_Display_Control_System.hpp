@@ -25,34 +25,12 @@ private:
 int current_Menu;
     int Menu_Index;
     int cursor_Position;
-    string MenuStart[2];
-    string MenuSenden[11];
-    string MenuEmpfangen[4];
-    string Menu4[2];
+    String MenuStart[2];
+    String MenuSenden[11];
+    String MenuEmpfangen[4];
+    String Menu4[2];
     int values[10];
-        // Initialisierung der Menü-Arrays
-        MenuStart[0] = "Senden";
-        MenuStart[1] = "Empfangen";
 
-        MenuSenden[0] = "1";
-        MenuSenden[1] = "2";
-        MenuSenden[2] = "3";
-        MenuSenden[3] = "4";
-        MenuSenden[4] = "5";
-        MenuSenden[5] = "6";
-        MenuSenden[6] = "7";
-        MenuSenden[7] = "8";
-        MenuSenden[8] = "9";
-        MenuSenden[9] = "10";
-        MenuSenden[10] = "Abbrechen";
-
-        MenuEmpfangen[0] = "Warte auf Signal...";
-        MenuEmpfangen[1] = "Signal Empfangen: ";
-        MenuEmpfangen[2] = "Speichern";
-        MenuEmpfangen[3] = "Abbrechen";
-
-        Menu4[0] = "Option1";
-        Menu4[1] = "Option2";
     void Update_Values(int index, int value);
 
 
