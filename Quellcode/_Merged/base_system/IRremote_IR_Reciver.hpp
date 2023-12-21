@@ -9,6 +9,8 @@ public:
   
   void Init(); //Initilisierungs funktion 
 
+  void Recive();
+
 };
 
 #endif //IRREMOTE_RECIVER_HPP

@@ -4,4 +4,4 @@
 
 IR_Sender::IR_Sender(){}
 
-IR_Sender::Init(){}
+void IR_Sender::Init(){}
