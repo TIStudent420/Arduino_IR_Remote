@@ -64,7 +64,6 @@ public:
   void control(Display_Commands cmd);
 
   void Update_Display_Text();
-  void Move_Cursor(int move);
 
   void UpdateValuesAtIndex(int index, int value);
   int GetValueAtIndex(int index);
