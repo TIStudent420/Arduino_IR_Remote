@@ -14,6 +14,7 @@ void setup() {
   //Serielle Kommunikation initialisieren
   Serial.begin(9600);
 
+  lcd_display.init();
   //Initialisierungen/Setup des Drehschalters
   Drehschalter.Init();
   //Initialisierungen/Setup des Empfängers
