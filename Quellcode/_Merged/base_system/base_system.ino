@@ -1,46 +1,32 @@
-#include "Pin_defines.h"
-/*
- * Pins aus "Pin_defines.h":
- *  - Pin_CLK_RSW - Clock-Pin des Drehschalters
- *  - Pin_DT_RSW - Daten-Pin des Drehschalters
- *  - Pin_SW_RSW - Knopf-Pin des Drehschalters
-*/
-#include "Control_Unit.hpp"
+#include "base_definitions.h" //Pin-definitionen, Enum für Displayschnittstelle
+#include "IRremote_RE_Input_Control.hpp"
+#include "IRremote_Display_Control_System.hpp"
 
 //Drehschalter-Klasse Initialisieren -> zum Steuern der Ein-/Ausgabe
-RSW_Control_Unit Drehschalter(Pin_CLK_RSW,Pin_DT_RSW,Pin_SW_RSW);
+RE_Input_Control Drehschalter(Pin_RE_CLK, Pin_RE_DT, Pin_RE_SW);
+//Display-Klasse Initialisieren
+Display_Control_System lcd_display;
 
 void setup() {
   //Serielle Kommunikation initialisieren
   Serial.begin(9600);
 
   //Initialisierungen des Drehschalters
-  Drehschalter.init();
+  Drehschalter.Init();
 
   Serial.println("Hello Munke");
 }
 
-void display_control(Display_Commands cmd){
-  switch (cmd){
-    case Display_UP:{
-      Serial.println("UP");
-      break;
-    }
-    case Display_DOWN:{
-      Serial.println("DOWN");
-      break;
-    }
-    case Display_OK:{
-      Serial.println("OK");
-      break;
-    }
-    default :
-      break;
-  }
+//Diese Funktion wird als callback an den Drehschalter übergeben
+// -> wöllte ich die Member-Funktion der Display-Klasse übergeben,
+//   müsste ich diese ebenfalls in der Drehschalter-Klasse implementieren
+//     -> das würde gegen das Prinzip der unabhängigkeit der Module untereinander verstoßen
+void display_callback_layer(Display_Commands cmd){
+  lcd_display.control(cmd);
 }
 
 void loop() {
   //Überprüft die Eingabe des Drehschalters
-  //Per Übergabe einer Funktion, kann der 
-  Drehschalter.Checkup(display_control);
+  //Per Übergabe einer Funktion, kann der
+  Drehschalter.Checkup(display_callback_layer);
 }
