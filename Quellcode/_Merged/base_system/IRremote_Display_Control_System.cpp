@@ -6,18 +6,20 @@
 #include <iostream>
 
 //Konstruktor implementieren
-Display_Control_System::Display_Control_System(){}
-LiquidCrystal lcd(5 ,6 ,7, 8, 9, 10);
-Display myDisplay;
+Display_Control_System::Display_Control_System():current_Menu(1), cursor_Position(0), Menu_Index(0) {
+  // Initialisierung der Werte-Liste mit Nullen
+  for (int i = 0; i < 10; ++i) {
+            values[i] = 0;
+        }
+}
+LiquidCrystal lcd(Pin_LCD_RS ,Pin_LCD_E ,Pin_LCD_D4 ,Pin_LCD_D5 ,Pin_LCD_D6 , Pin_LCD_D7);
 
-void setup() {
+void Display_Control_System::init(){
   // set up the LCD's number of columns and rows:
   lcd.begin(16, 2);
   lcd.print("Hello, Munke!");
-  myDisplay.Update_Display_Text();
+  Update_Display_Text();
 }
-
-void Display_Control_System::init(){}
 
 void Display_Control_System::control(Display_Commands cmd){
   switch (cmd){
@@ -39,20 +41,8 @@ void Display_Control_System::control(Display_Commands cmd){
       break;
   }
 }
-
-class Display {
-private:
-    int current_Menu;
-    int Menu_Index;
-    int cursor_Position;
-    std::string MenuStart[2];
-    std::string MenuSenden[11];
-    std::string MenuEmpfangen[4];
-    std::string Menu4[2];
-    int values[10];
-
-    void Update_Values(int index, int value) {
-        // Überprüfe den Index, um sicherzustellen, dass er gültig ist
+void Display_Control_System::Update_Values(int index, int value){
+          // Überprüfe den Index, um sicherzustellen, dass er gültig ist
         if (index >= 0 && index < 10) {
             values[index] = value;
             //std::cout << "Wert an Index " << index << " in der Liste aktualisiert." << std::endl;
@@ -61,40 +51,11 @@ private:
             return -1;
         }
         return;
-    }
+}
 
 public:
         //Initialisieren der Menu und Cursor führung
-    Display() : current_Menu(1), cursor_Position(0), Menu_Index(0) {
-        // Initialisierung der Menü-Arrays
-        MenuStart[0] = "Senden";
-        MenuStart[1] = "Empfangen";
-
-        MenuSenden[0] = "1";
-        MenuSenden[1] = "2";
-        MenuSenden[2] = "3";
-        MenuSenden[3] = "4";
-        MenuSenden[4] = "5";
-        MenuSenden[5] = "6";
-        MenuSenden[6] = "7";
-        MenuSenden[7] = "8";
-        MenuSenden[8] = "9";
-        MenuSenden[9] = "10";
-        MenuSenden[10] = "Abbrechen";
-
-        MenuEmpfangen[0] = "Warte auf Signal...";
-        MenuEmpfangen[1] = "Signal Empfangen: ";
-        MenuEmpfangen[2] = "Speichern";
-        MenuEmpfangen[3] = "Abbrechen";
-
-        Menu4[0] = "Option1";
-        Menu4[1] = "Option2";
-
-        // Initialisierung der Werte-Liste mit Nullen
-        for (int i = 0; i < 10; ++i) {
-            values[i] = 0;
-        }
-    }
+    
 
     void Update_Display_Text() {
         switch (current_Menu)
@@ -204,15 +165,4 @@ public:
             return -1; // Hier könnte auch eine andere spezielle Rückgabewert verwendet werden
         }
     }
-};
 
-int main() {
-    // Beispiel-Nutzung der Klasse
-    Display myDisplay;
-
-    // Beispielaufruf der neuen Funktionen
-    myDisplay.UpdateMenuAtIndex(1, "NeueOption");
-    myDisplay.UpdateValuesAtIndex(3, 42);
-
-    return 0;
-}

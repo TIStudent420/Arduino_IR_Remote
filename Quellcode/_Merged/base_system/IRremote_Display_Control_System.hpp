@@ -21,12 +21,53 @@
 #include "base_definitions.h"
 
 class Display_Control_System{
+private:
+int current_Menu;
+    int Menu_Index;
+    int cursor_Position;
+    string MenuStart[2];
+    string MenuSenden[11];
+    string MenuEmpfangen[4];
+    string Menu4[2];
+    int values[10];
+        // Initialisierung der Menü-Arrays
+        MenuStart[0] = "Senden";
+        MenuStart[1] = "Empfangen";
+
+        MenuSenden[0] = "1";
+        MenuSenden[1] = "2";
+        MenuSenden[2] = "3";
+        MenuSenden[3] = "4";
+        MenuSenden[4] = "5";
+        MenuSenden[5] = "6";
+        MenuSenden[6] = "7";
+        MenuSenden[7] = "8";
+        MenuSenden[8] = "9";
+        MenuSenden[9] = "10";
+        MenuSenden[10] = "Abbrechen";
+
+        MenuEmpfangen[0] = "Warte auf Signal...";
+        MenuEmpfangen[1] = "Signal Empfangen: ";
+        MenuEmpfangen[2] = "Speichern";
+        MenuEmpfangen[3] = "Abbrechen";
+
+        Menu4[0] = "Option1";
+        Menu4[1] = "Option2";
+    void Update_Values(int index, int value);
+
+
 public:
   Display_Control_System(); //Konstruktor
   
   void init(); //Initilisierungs funktion 
 
   void control(Display_Commands cmd);
+
+  void Update_Display_Text();
+  void Move_Cursor(int move);
+
+  void UpdateValuesAtIndex(int index, int value);
+  int GetValueAtIndex(int index);
 };
 
 #endif //IRremote_DISPLAY_CONTROO_SYSTEM_HPP
