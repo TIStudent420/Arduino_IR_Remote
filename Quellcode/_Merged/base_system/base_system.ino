@@ -1,27 +1,24 @@
 #include "base_definitions.h" //Pin-definitionen, Enum für Displayschnittstelle
-#include "IRremote_RE_Input_Control.hpp" //Drehschalter
-#include "IRremote_Display_Control_System.hpp" //Display
-#include "IRremote_Sensor_Actor_System.hpp" //Sender / Empfänger
-//#include "Menue_Control_Layer.hpp"
- 
+#include "IRremote_RE_Input_Control.hpp"
+#include "IRremote_Display_Control_System.hpp"
+#include "IRremote_IR_Reciver.hpp"
+
 //Drehschalter-Klasse Initialisieren -> zum Steuern der Ein-/Ausgabe
 RE_Input_Control Drehschalter(Pin_RE_CLK, Pin_RE_DT, Pin_RE_SW);
-//Display-Klasse Initialisieren (mit Pins)
-Display_Control_System Display(Pin_LCD_RS,Pin_LCD_E,Pin_LCD_D4,Pin_LCD_D5,Pin_LCD_D6,Pin_LCD_D7);
+//Display-Klasse Initialisieren
+Display_Control_System lcd_display;
 //IR_Sensor initialisieren
-Sensor_Actor_System IR_System(Pin_IR_RECV,Pin_IR_RECV_FEEDBACK,Pin_IR_LED,Pin_IR_LED_FEEDBACK);
+IR_Revicer IR_Sensor;
 
 void setup() {
   //Serielle Kommunikation initialisieren
   Serial.begin(9600);
 
-  //Display setup
-  Display.Init();
+  lcd_display.init();
   //Initialisierungen/Setup des Drehschalters
   Drehschalter.Init();
-  //Initialisierungen/Setup des Empfängers/des Senders
-  IR_System.Init();
-
+  //Initialisierungen/Setup des Empfängers
+  IR_Sensor.Init();
   Serial.println("Hello Munke");
 }
 
@@ -30,14 +27,27 @@ void setup() {
 //   müsste ich diese ebenfalls in der Drehschalter-Klasse implementieren
 //     -> das würde gegen das Prinzip der unabhängigkeit der Module untereinander verstoßen
 void display_callback_layer(Display_Commands cmd){
-  Display.control(cmd);
+  lcd_display.control(cmd);
+}
+
+
+/**
+ * @param toSend true wenn die funktion senden soll, flase wenn Daten Empfangen werden sollen 
+ * @param send_value der zusendende Command, bzw die sende-strucktur
+*/
+void menue_callback_layer(bool toSend,int send_value){
+  if (toSend){
+    Serial.println("Sendevorgang einleiten...");
+  }
+  else{
+    Serial.println("Empfangvorgang einleiten...");
+  }
 }
 
 void loop() {
   //Überprüft die Eingabe des Drehschalters
   //Per Übergabe einer Funktion, kann der
   Drehschalter.Checkup(display_callback_layer);
-  
   //Überprüft den IR-Sensor
-  IR_System.Recive();
+  IR_Sensor.Recive();
 }
