@@ -2,7 +2,6 @@
 #include "IRremote_RE_Input_Control.hpp" //Drehschalter
 #include "IRremote_Display_Control_System.hpp" //Display
 #include "IRremote_Sensor_Actor_System.hpp" //Sender / Empfänger
-//#include "Menue_Control_Layer.hpp"
  
 //Drehschalter-Klasse Initialisieren -> zum Steuern der Ein-/Ausgabe
 RE_Input_Control Drehschalter(Pin_RE_CLK, Pin_RE_DT, Pin_RE_SW);
@@ -31,20 +30,6 @@ void setup() {
 //     -> das würde gegen das Prinzip der unabhängigkeit der Module untereinander verstoßen
 void display_callback_layer(Display_Commands cmd){
   Display.control(cmd);
-}
-
-
-/**
- * @param toSend true wenn die funktion senden soll, flase wenn Daten Empfangen werden sollen 
- * @param send_value der zusendende Command, bzw die sende-strucktur
-*/
-void menue_callback_layer(bool toSend,int send_value){
-  if (toSend){
-    Serial.println("Sendevorgang einleiten...");
-  }
-  else{
-    Serial.println("Empfangvorgang einleiten...");
-  }
 }
 
 void loop() {

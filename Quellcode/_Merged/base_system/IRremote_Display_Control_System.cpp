@@ -6,7 +6,23 @@
 Display_Control_System::Display_Control_System(int rs_pin, int e_pin, int d4_pin, int d5_pin, int d6_pin, int d7_pin)
   :lcd(rs_pin, e_pin, d4_pin, d5_pin, d6_pin, d7_pin) {
 
+  current_Menu = 1;
+  cursor_Position = 0;
+  Menu_Index = 0;
 
+  // Initialisierung der Menü-Arrays
+  MenuStart[0] = "Senden";
+  MenuStart[1] = "Empfangen";
+
+  MenuSenden[0] = "1";
+  MenuSenden[1] = "2";
+  MenuSenden[2] = "zurück";
+
+  MenuEmpfangen[0] = "1";
+  MenuEmpfangen[1] = "2";
+  MenuEmpfangen[0] = "3";
+  MenuEmpfangen[1] = "4";
+  MenuEmpfangen[3] = "zurück";
 }
 
 
@@ -139,14 +155,51 @@ int Display_Control_System::GetValueAtIndex(int index) {
   }
 }
 
-void Display_Control_System::Update_Display_Text(String text_1, String text_2){
-  
-}
+//Initialisieren der Menu und Cursor führung
+void Display_Control_System::Update_Display_Text() {
 
-//Schreibt text auf display (gibt nur zwei spalten)
-void Display_Control_System::WriteDisplayAt(String text,int position) {
-  if(position  == 0 || position == 1){
-    lcd.setCursor(0, position);
-    lcd.print(text);
+  switch (Display_Control_System::current_Menu) {
+    case 1:
+      if (Display_Control_System::cursor_Position = 0) {
+        lcd.setCursor(0, 0);
+        lcd.print("->" + MenuStart[0]);
+        lcd.setCursor(0, 1);
+        lcd.print(MenuStart[1]);
+      }
+      if (cursor_Position = 1) {
+        lcd.setCursor(0, 0);
+        lcd.print(MenuStart[0]);
+        lcd.setCursor(0, 1);
+        lcd.print("->" + MenuStart[1]);
+      }
+      break;
+    case 2:
+      if (cursor_Position = 0) {
+        lcd.setCursor(0, 0);
+        lcd.print("->" + MenuSenden[Menu_Index]);
+        lcd.setCursor(0, 1);
+        lcd.print(MenuSenden[Menu_Index + 1]);
+      }
+      if (cursor_Position = 1) {
+        lcd.setCursor(0, 0);
+        lcd.print(MenuSenden[Menu_Index - 1]);
+        lcd.setCursor(0, 1);
+        lcd.print("->" + MenuSenden[Menu_Index]);
+      }
+    case 3:
+      if (cursor_Position = 0) {
+        lcd.setCursor(0, 0);
+        lcd.print("->" + MenuEmpfangen[Menu_Index]);
+        lcd.setCursor(0, 1);
+        lcd.print(MenuEmpfangen[Menu_Index + 1]);
+      }
+      if (cursor_Position = 1) {
+        lcd.setCursor(0, 0);
+        lcd.print(MenuEmpfangen[Menu_Index - 1]);
+        lcd.setCursor(0, 1);
+        lcd.print("->" + MenuEmpfangen[Menu_Index]);
+      }
+    default:
+      break;
   }
 }
