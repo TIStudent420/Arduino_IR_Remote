@@ -33,6 +33,20 @@ void display_callback_layer(Display_Commands cmd){
   Display.control(cmd);
 }
 
+
+/**
+ * @param toSend true wenn die funktion senden soll, flase wenn Daten Empfangen werden sollen 
+ * @param send_value der zusendende Command, bzw die sende-strucktur
+*/
+void menue_callback_layer(bool toSend,int send_value){
+  if (toSend){
+    Serial.println("Sendevorgang einleiten...");
+  }
+  else{
+    Serial.println("Empfangvorgang einleiten...");
+  }
+}
+
 void loop() {
   //Überprüft die Eingabe des Drehschalters
   //Per Übergabe einer Funktion, kann der
