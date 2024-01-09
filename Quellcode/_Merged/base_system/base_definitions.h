@@ -1,6 +1,8 @@
+
 #ifndef BASE_DEFINITIONS_H
 #define BASE_DEFINITIONS_H
 
+#include <Arduino.h>
 //Pinzuweisung basiert auf dem jeweiligen verwendeten Board (nicht so wichtig)
 //   RE => Rotary Encoder
 #if defined(__AVR_ATmega328P__)  // Arduino Uno

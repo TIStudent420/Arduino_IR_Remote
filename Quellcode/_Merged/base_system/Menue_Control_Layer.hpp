@@ -13,7 +13,7 @@
 class Menue_Control_Layer{
 
 public:
-  Menue_Control_Layer(FKT_Callback m_callback); //Konstruktor
+  Menue_Control_Layer(/*FKT_Callback m_callback*/); //Konstruktor
 
   Menue_Entry_s Get_Entry(enum Menue_Titles title,int index);
   void Manipulate_Entry(enum Menue_Titles title,int index,Menue_Entry_s new_entry);
