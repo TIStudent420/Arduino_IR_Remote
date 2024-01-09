@@ -2,7 +2,7 @@
 #include "base_definitions.h"
 
 Menue_Control_Layer::Menue_Control_Layer(/*FKT_Callback m_callback*/){
-    Init_Menue_Arrays(callback);
+    Init_Menue_Arrays(/*m_callback*/);
 }
 
 void Menue_Control_Layer::Init_Menue_Arrays(/*FKT_Callback m_callback*/){

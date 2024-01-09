@@ -12,7 +12,7 @@ RE_Input_Control Drehschalter(Pin_RE_CLK, Pin_RE_DT, Pin_RE_SW);
 //Display-Klasse Initialisieren
 Display_Control_System lcd_display(Pin_LCD_RS,Pin_LCD_E,Pin_LCD_D4,Pin_LCD_D5,Pin_LCD_D6,Pin_LCD_D7);
 //Menü
-Menue_Control_Layer Menue();
+Menue_Control_Layer Menue;
 
 void setup() {
   //Serielle Kommunikation initialisieren

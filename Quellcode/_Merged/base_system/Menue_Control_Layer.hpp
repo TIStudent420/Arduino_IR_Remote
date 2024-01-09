@@ -19,7 +19,7 @@ public:
   void Manipulate_Entry(enum Menue_Titles title,int index,Menue_Entry_s new_entry);
 
 private:
-  void Init_Menue_Arrays(FKT_Callback m_callback); //Initialisert die Menü-arraysd mit werten
+  void Init_Menue_Arrays(/*FKT_Callback m_callback*/); //Initialisert die Menü-arraysd mit werten
 
   Menue_Entry_s Start_Menue[3];
   Menue_Entry_s Send_Menue[4];
