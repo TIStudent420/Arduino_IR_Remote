@@ -20,27 +20,27 @@ void RE_Input_Control::Checkup(Controls_Callback callback){
   //  - deshalb wird hier immer mit 4/-4 Verglichen -> das entspricht genau einem Schritt
   //  - Anschließend wird der Zähler zurückgesetzt.
   if(Rotary_Encoder_PC1.read()==4){
-    Serial.println("rotation left");//links=rauf
     Rotary_Encoder_PC1.readAndReset();
     //nach_oben-Funktion in der Steuerung/Display-Anwendung
     callback(Display_UP);
+    Serial.println("UP");
     return;
   }
   else if(Rotary_Encoder_PC1.read()==-4){
-    Serial.println("rotation right");//rechts=runter
     Rotary_Encoder_PC1.readAndReset();
     //nach_unten-Funktion in der Steuerung/Display-Anwendung
     callback(Display_DOWN);
+    Serial.println("DOWN");
     return;
   }
   
   if(!digitalRead(Pin_SW)){
-    Serial.println("Button Pressed");
     //kurze pause, da knöpfe sehr ungenau sind 
     //-> würde sonst mehrmals auslösen
     delay(200);
     //Auswählen-Funktion in der Steuerung/Display-Anwendung
     callback(Display_OK);
+    Serial.println("OK");
     return;
   }
   return;

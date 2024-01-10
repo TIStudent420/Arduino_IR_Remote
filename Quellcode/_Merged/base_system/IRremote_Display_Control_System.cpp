@@ -15,7 +15,6 @@ Display_Control_System::Display_Control_System(int rs_pin, int e_pin, int d4_pin
 void Display_Control_System::Init() {
   // set up the LCD's number of columns and rows:
   lcd.begin(16, 2);
-  Update_Display_Text("Hello, Munke!","");
 }
 
 
@@ -28,6 +27,9 @@ void Display_Control_System::Update_Display_Text(String text_1, String text_2) {
   //clear Display
   lcd.clear();
   //Text anzeigen (text1 -> Zeile 1) (text2 -> Zeile 2)
-  lcd.print(text_1+""+text_2);
+  lcd.setCursor(0, 0);
+  lcd.print("->" + text_1);
+  lcd.setCursor(0, 1);
+  lcd.print(text_2);
   return;
 }

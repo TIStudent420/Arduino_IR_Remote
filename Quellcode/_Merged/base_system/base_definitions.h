@@ -50,6 +50,7 @@ enum Display_Commands{
 // jedes dieser Menüs hat Unterpunkte
 // die anzahl, bezeichnung und funktion der Unterpunkte ist in der Menue_Control_Layer Implementiert
 enum Menue_Titles{
+  Menue_Entry_Greetings = -1,
   Funktion = 0,
   Menue_Entry_Start = 1,
   Menue_Entry_Senden = 2,
@@ -62,7 +63,6 @@ using FKT_Callback = void (*)(int);
 struct Menue_Entry_s{  //Struktur eines Menü-Eintrages
   String name;
   int value;
-  bool folloing_menue;
   enum Menue_Titles followed_by;
   FKT_Callback fkt_callback;
 };

@@ -17,14 +17,15 @@ public:
 
   Menue_Entry_s Get_Entry(enum Menue_Titles title,int index);
   void Manipulate_Entry(enum Menue_Titles title,int index,Menue_Entry_s new_entry);
+  int Check_Index(enum Menue_Titles title,int index);
 
 private:
   void Init_Menue_Arrays(/*FKT_Callback m_callback*/); //Initialisert die Menü-arraysd mit werten
 
   Menue_Entry_s Start_Menue[3];
-  Menue_Entry_s Send_Menue[4];
+  Menue_Entry_s Send_Menue[10];
   Menue_Entry_s Recive_Menue[10];
-
+  Menue_Entry_s Greetings_Menue[2];
 
 };
 
