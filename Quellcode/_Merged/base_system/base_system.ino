@@ -6,6 +6,7 @@
 #include "Menue_Control_Layer.hpp"
 
 //IR Sensor und Empfänger
+#include "IRremote_Sensor_Actor_System.hpp"
 
 //Drehschalter-Klasse Initialisieren -> zum Steuern der Ein-/Ausgabe
 RE_Input_Control Drehschalter(Pin_RE_CLK, Pin_RE_DT, Pin_RE_SW);
@@ -13,6 +14,8 @@ RE_Input_Control Drehschalter(Pin_RE_CLK, Pin_RE_DT, Pin_RE_SW);
 Display_Control_System lcd_display(Pin_LCD_RS,Pin_LCD_E,Pin_LCD_D4,Pin_LCD_D5,Pin_LCD_D6,Pin_LCD_D7);
 //Menü
 Menue_Control_Layer Menue;
+//Sender & Empfänger
+Sensor_Actor_System IR_System(Pin_IR_RECV,Pin_IR_RECV_FEEDBACK,Pin_IR_LED,Pin_IR_LED_FEEDBACK);
 
 void setup() {
   //Serielle Kommunikation initialisieren
@@ -29,7 +32,8 @@ void setup() {
 
 //globale Variablen
 int curr_menu_index = 0;
-enum Menue_Titles curr_Title = -1;
+enum Menue_Titles curr_Title = Menue_Entry_Greetings;
+IRData_s recived_data;
 
 //Wenn Display_UP || Display_DOWN
 //neuen Menüeintrag auf display anzeigen (ermittelt über aktuellen Menü-Titel und aktuellen Index)
@@ -63,25 +67,36 @@ void display_menu(){
 }
 
 //Wenn Display_OK:
-void check_menue_entry(){
+int check_menue_entry(){
+  int err;
   //Menü eintrag überprüfen:
   // -> folgt ein weiteres Menü?
   // -> wenn nicht, dann folgt eine Funktion
   // -> senden, empfangen oder callback??
   Menue_Entry_s curr_entry;
   curr_entry = Menue.Get_Entry(curr_Title,curr_menu_index);
-
+Serial.println(curr_entry.followed_by);
   if(curr_entry.followed_by==Funktion){//es soll eine Funktion (senden oder empfangen ausgeführt werden)
     //callback oder andere Funktion ausführen
     if(curr_Title==Menue_Entry_Senden){
       //Sende-funktion aufrufen
+      err = send_irremote(curr_entry);
     }else if(curr_Title==Menue_Entry_Empfangen){
       //empfang-Schleife aufrufen
+      err = recive_irremote();
   }
+  }else if(curr_entry.followed_by==Menue_Entry_Saved){
+    //empfangene Daten in neuen Eintrag umwandeln
+    Menue_Entry_s new_entry={"get",recieved_data,Menue_Entry_Start};
+    //speichern
+    Menue.Manipulate_Entry(curr_entry,curr_menue_index,new_entry);
+    curr_entry=Menue_Entry_Start;
   }else{  
     curr_Title=curr_entry.followed_by;
+    err =0;
   }
-  return;
+  Serial.println(curr_Title);
+  return err;
 }
 
 //Diese Funktion wird als callback an den Drehschalter übergeben
@@ -106,9 +121,13 @@ void base_system(Display_Commands cmd){
       }
     case Display_OK:
       {
-        check_menue_entry();
+        if(check_menue_entry())
+          Serial.println("Fehler beim ausführen der Funktion");
+
         //index zurückstezten
-        curr_menu_index=0;
+        curr_menu_index = 0;
+        //Menü zurücksetzten
+        //curr_Title = Menue_Entry_Greetings;
         break;
       }
     default:
@@ -116,6 +135,26 @@ void base_system(Display_Commands cmd){
   }
   //display aktualisieren
   display_menu();
+}
+
+int send_irremote(Menue_Entry_s curr_entry){
+  Menue.Get_Entry(curr_Title, curr_menu_index);
+  Serial.println(curr_entry.data.protocol);
+  Serial.println(curr_entry.data.command);
+
+  return 0;
+}
+
+int recive_irremote(){
+  
+  recived_data = IR_System.Recive(recived_data);
+  //Empfangene Daten abspeichern
+  //wo?
+  //neuen Menüeintrag aus Savedmenü auswählen
+  curr_Title=Menue_Entry_Saved;
+  display_menu();
+
+  return 0;
 }
 
 void loop() {

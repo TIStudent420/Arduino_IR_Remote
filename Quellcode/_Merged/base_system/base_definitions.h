@@ -3,6 +3,7 @@
 #define BASE_DEFINITIONS_H
 
 #include <Arduino.h>
+
 //Pinzuweisung basiert auf dem jeweiligen verwendeten Board (nicht so wichtig)
 //   RE => Rotary Encoder
 #if defined(__AVR_ATmega328P__)  // Arduino Uno
@@ -54,17 +55,55 @@ enum Menue_Titles{
   Funktion = 0,
   Menue_Entry_Start = 1,
   Menue_Entry_Senden = 2,
-  Menue_Entry_Empfangen = 3
+  Menue_Entry_Empfangen = 3,
+  Menue_Entry_Saved=4
 };
 
-//Callback für die Funktion eines Menü-Eintrages
-using FKT_Callback = void (*)(int); 
+enum protokoll_type_t {
+    UNKNOWN_T = 0,
+    PULSE_WIDTH_T,
+    PULSE_DISTANCE_t,
+    APPLE_t,
+    DENON_t,
+    JVC_t,
+    LG_t,
+    LG2_t,
+    NEC_T,
+    NEC2_T, /* NEC with full frame as repeat */
+    ONKYO_T,
+    PANASONIC_T,
+    KASEIKYO_T,
+    KASEIKYO_DENON_T,
+    KASEIKYO_SHARP_T,
+    KASEIKYO_JVC_T,
+    KASEIKYO_MITSUBISHI_t,
+    RC5_T,
+    RC6_t,
+    SAMSUNG_T,
+    SAMSUNG48_T,
+    SAMSUNG_LG_T,
+    SHARP_T,
+    SONY_T,
+    /* Now the exotic protocols */
+    BANG_OLUFSEN_t,
+    BOSEWAVE_T,
+    LEGO_PF_T,
+    MAGIQUEST_T,
+    WHYNTER_T,
+    FAST_T
+} ;
+
+//Struckut zum senden und empfanegn von daten
+struct IRData_s {
+    protokoll_type_t protocol; ///< UNKNOWN, NEC, SONY, RC5, PULSE_DISTANCE, ...
+    uint16_t address; ///< Decoded address, Distance protocol (tMarkTicksLong (if tMarkTicksLong == 0, then tMarkTicksShort) << 8) | tSpaceTicksLong
+    uint16_t command;       ///< Decoded command, Distance protocol (tMarkTicksShort << 8) | tSpaceTicksShort
+};
 
 struct Menue_Entry_s{  //Struktur eines Menü-Eintrages
   String name;
-  int value;
+  IRData_s data;
   enum Menue_Titles followed_by;
-  FKT_Callback fkt_callback;
 };
 
 #endif //BASE_DEFINITIONS_H

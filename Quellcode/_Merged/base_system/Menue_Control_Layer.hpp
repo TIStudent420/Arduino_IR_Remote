@@ -22,10 +22,11 @@ public:
 private:
   void Init_Menue_Arrays(/*FKT_Callback m_callback*/); //Initialisert die Menü-arraysd mit werten
 
-  Menue_Entry_s Start_Menue[3];
-  Menue_Entry_s Send_Menue[10];
+  Menue_Entry_s Start_Menue[4];
+  Menue_Entry_s Send_Menue[22];
   Menue_Entry_s Recive_Menue[10];
   Menue_Entry_s Greetings_Menue[2];
+  Menue_Entry_s Saved_Menue[10];
 
 };
 
