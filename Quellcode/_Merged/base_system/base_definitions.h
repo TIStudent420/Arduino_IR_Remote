@@ -51,12 +51,12 @@ enum Display_Commands{
 // jedes dieser Menüs hat Unterpunkte
 // die anzahl, bezeichnung und funktion der Unterpunkte ist in der Menue_Control_Layer Implementiert
 enum Menue_Titles{
-  Menue_Entry_Greetings = -1,
-  Funktion = 0,
-  Menue_Entry_Start = 1,
-  Menue_Entry_Senden = 2,
-  Menue_Entry_Empfangen = 3,
-  Menue_Entry_Saved=4
+  Menue_Entry_Greetings = 0,
+  Funktion,
+  Menue_Entry_Start,
+  Menue_Entry_Senden,
+  Menue_Entry_Empfangen,
+  Menue_Entry_Saved,
 };
 
 enum protokoll_type_t {

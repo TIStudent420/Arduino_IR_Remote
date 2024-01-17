@@ -25,24 +25,27 @@ void setup() {
   //Initialisierungen/Setup des Drehschalters
   Drehschalter.Init();
 
-
-  Serial.println("Hello Munke");
   display_menu();
 }
 
 //globale Variablen
-int curr_menu_index = 0;
-enum Menue_Titles curr_Title = Menue_Entry_Greetings;
-IRData_s recived_data;
+int curr_menu_index = 0;  //Zähler für Aktuellen Menü eintrag
+enum Menue_Titles curr_Title = Menue_Entry_Greetings; //aktueller Menütitel (start mit Greetings)
+IRData_s recived_data;  //empfangene Daten vom reciever
 
 //Wenn Display_UP || Display_DOWN
 //neuen Menüeintrag auf display anzeigen (ermittelt über aktuellen Menü-Titel und aktuellen Index)
 void display_menu(){
-  //Speichervariable für aktuellen Menüeintrag
-  Menue_Entry_s curr_entry;
-  //Bezeichnung des Eintrages -> wird auf Display angezeigt
-  String entry_text_1;
+  //Lokale Variablen
+  Menue_Entry_s curr_entry; //Speichervariable für aktuellen Menüeintrag
+  String entry_text_1; //Bezeichnungen des Eintrages -> wird auf Display angezeigt
   String entry_text_2;
+
+  Serial.print(" titel: ");
+  Serial.print(curr_Title);
+  Serial.print(" index: ");
+  Serial.print(curr_menu_index);
+  Serial.println(" ");
 
   curr_entry = Menue.Get_Entry(curr_Title,curr_menu_index);  
   entry_text_1 = curr_entry.name;
@@ -57,12 +60,6 @@ void display_menu(){
   Serial.print(" anzeige text2: ");
   Serial.print(entry_text_2);
   Serial.println(" ");
-
-  Serial.print(" titel: ");
-  Serial.print(curr_Title);
-  Serial.print(" index: ");
-  Serial.print(curr_menu_index);
-  Serial.println(" ");
   return;
 }
 
@@ -75,7 +72,9 @@ int check_menue_entry(){
   // -> senden, empfangen oder callback??
   Menue_Entry_s curr_entry;
   curr_entry = Menue.Get_Entry(curr_Title,curr_menu_index);
-Serial.println(curr_entry.followed_by);
+
+  Serial.println(curr_entry.followed_by);
+
   if(curr_entry.followed_by==Funktion){//es soll eine Funktion (senden oder empfangen ausgeführt werden)
     //callback oder andere Funktion ausführen
     if(curr_Title==Menue_Entry_Senden){
@@ -87,10 +86,10 @@ Serial.println(curr_entry.followed_by);
   }
   }else if(curr_entry.followed_by==Menue_Entry_Saved){
     //empfangene Daten in neuen Eintrag umwandeln
-    Menue_Entry_s new_entry={"get",recieved_data,Menue_Entry_Start};
+    Menue_Entry_s new_entry={"get",recived_data,Menue_Entry_Start};
     //speichern
-    Menue.Manipulate_Entry(curr_entry,curr_menue_index,new_entry);
-    curr_entry=Menue_Entry_Start;
+    //Menue.Manipulate_Entry(curr_entry,curr_menu_index,new_entry);
+    curr_Title=Menue_Entry_Start;
   }else{  
     curr_Title=curr_entry.followed_by;
     err =0;
