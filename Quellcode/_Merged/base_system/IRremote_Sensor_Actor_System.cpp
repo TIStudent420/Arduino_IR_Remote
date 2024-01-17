@@ -24,17 +24,16 @@ void Sensor_Actor_System::Init(){
 }
 
 //TODO: welchen Rückgabewert könnte es geben?
-IRData_s Sensor_Actor_System::Recive(IRData_s recived_data){
-  while(true){
+int Sensor_Actor_System::Recive(IRData_s *recived_data){
     if (IRrecv_OS_1838B.decode()) {
       //recived_data=IRrecv_OS_1838B.decodedIRData;
       IRrecv_OS_1838B.printIRResultShort(&Serial);
       IRrecv_OS_1838B.printIRSendUsage(&Serial);
       IRrecv_OS_1838B.resume();
 
-      return recived_data; //Rückgabewert mit Informationen zum Senden
+      return 1; //Rückgabewert mit Informationen zum Senden
     }
-  }
+    return 0;
 }
 
 //TODO: welche Informationen brauche ich zum Senden?

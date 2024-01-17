@@ -11,7 +11,7 @@ public:
   void Init();
 
 
-  IRData_s Recive(IRData_s recived_data);
+  int Recive(IRData_s *recived_data);
   void Send();
   
 private:

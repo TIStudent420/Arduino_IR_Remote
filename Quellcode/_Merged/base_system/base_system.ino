@@ -32,6 +32,7 @@ void setup() {
 int curr_menu_index = 0;  //Zähler für Aktuellen Menü eintrag
 enum Menue_Titles curr_Title = Menue_Entry_Greetings; //aktueller Menütitel (start mit Greetings)
 IRData_s recived_data;  //empfangene Daten vom reciever
+bool write_flag = false; //später evtl durch überprüfung auf nullpointer von empfangenen Daten (recived_data)
 
 //Wenn Display_UP || Display_DOWN
 //neuen Menüeintrag auf display anzeigen (ermittelt über aktuellen Menü-Titel und aktuellen Index)
@@ -79,17 +80,19 @@ int check_menue_entry(){
     //callback oder andere Funktion ausführen
     if(curr_Title==Menue_Entry_Senden){
       //Sende-funktion aufrufen
-      err = send_irremote(curr_entry);
+      if(!write_flag){
+        err = send_irremote(curr_entry);
+       }else{
+        //neuer Eintrag
+        Menue_Entry_s new_entry={"get",recived_data,Menue_Entry_Start};
+        //Eintrag Manipulieren
+        Menue.Manipulate_Entry(Menue_Entry_Senden,curr_menu_index,new_entry);
+        write_flag=false;
+       }
     }else if(curr_Title==Menue_Entry_Empfangen){
       //empfang-Schleife aufrufen
       err = recive_irremote();
   }
-  }else if(curr_entry.followed_by==Menue_Entry_Saved){
-    //empfangene Daten in neuen Eintrag umwandeln
-    Menue_Entry_s new_entry={"get",recived_data,Menue_Entry_Start};
-    //speichern
-    //Menue.Manipulate_Entry(curr_entry,curr_menu_index,new_entry);
-    curr_Title=Menue_Entry_Start;
   }else{  
     curr_Title=curr_entry.followed_by;
     err =0;
@@ -145,15 +148,23 @@ int send_irremote(Menue_Entry_s curr_entry){
 }
 
 int recive_irremote(){
-  
-  recived_data = IR_System.Recive(recived_data);
-  //Empfangene Daten abspeichern
-  //wo?
-  //neuen Menüeintrag aus Savedmenü auswählen
-  curr_Title=Menue_Entry_Saved;
-  display_menu();
-
-  return 0;
+  int err = 0;
+  String loading_text ="";
+  while (!err) //dauerschleife zum empfangen von Daten
+  {
+    //err = IR_System.Recive(&recived_data);
+    //Punkte anzeigen
+    if (loading_text=="...") loading_text="";
+    
+    loading_text = loading_text +".";
+    lcd_display.Update_Display_Text(loading_text," ");
+    
+    recived_data={UNKNOWN_T,0,0x01};
+  }
+  //epmfanegnen Eintrag abspeichern
+  curr_Title=Menue_Entry_Senden;
+  write_flag=true;
+  return err;
 }
 
 void loop() {
