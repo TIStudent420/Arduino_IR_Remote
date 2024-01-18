@@ -31,7 +31,7 @@ void setup() {
 //globale Variablen
 int curr_menu_index = 0;  //Zähler für Aktuellen Menü eintrag
 enum Menue_Titles curr_Title = Menue_Entry_Greetings; //aktueller Menütitel (start mit Greetings)
-IRData_s recived_data;  //empfangene Daten vom reciever
+IRData_s *recived_data=nullptr;  //empfangene Daten vom reciever
 bool write_flag = false; //später evtl durch überprüfung auf nullpointer von empfangenen Daten (recived_data)
 
 //Wenn Display_UP || Display_DOWN
@@ -85,9 +85,9 @@ int check_menue_entry(){
         err = send_irremote(curr_entry);
        }else{
         Serial.println("schreiben");
-        Serial.println(recived_data.command);
+        Serial.println(recived_data->command);
         //neuer Eintrag
-        Menue_Entry_s new_entry={"get",recived_data,Menue_Entry_Start};
+        Menue_Entry_s new_entry={"get",{recived_data->protokoll},Menue_Entry_Start};
         //Eintrag Manipulieren
         Menue.Manipulate_Entry(Menue_Entry_Senden,curr_menu_index,new_entry);
         write_flag=false;
