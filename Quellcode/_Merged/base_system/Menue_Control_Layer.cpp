@@ -24,14 +24,25 @@ void Menue_Control_Layer::Init_Menue_Arrays(){
     Send_Menue[0]={"Ein/Aus",{NEC_T,0x00,0x45},Funktion};
     Send_Menue[1]={"Rot",{NEC_T,0x00,0x46},Funktion};
     Send_Menue[2]={"Blau",{NEC_T,0x00,0x15},Funktion};
-    Send_Menue[3]={"Gruen",{NEC_T,0x00,0x47},Funktion};
-    Send_Menue[4]={"was?",{NEC_T,0x00,0x44},Funktion};
+    Send_Menue[3]={"Grün",{NEC_T,0x00,0x47},Funktion};
+    Send_Menue[4]={"",{NEC_T,0x00,0x44},Funktion};
     Send_Menue[5]={"Vor>>",{NEC_T,0x00,0x43},Funktion};
     Send_Menue[6]={"Play/Pause",{NEC_T,0x00,0x40},Funktion};
     Send_Menue[7]={"cmd8",{NEC_T,0x00,0x07},Funktion};
     Send_Menue[8]={"cmd9",{NEC_T,0x00,0x09},Funktion};
-
-    Send_Menue[9]={"back",{NEC_T,0x00,0x00},Menue_Entry_Start};
+    Send_Menue[9]={"cmd1",{NEC_T,0x00,0x19},Funktion};
+    Send_Menue[10]={"cmd2",{NEC_T,0x00,0x0D},Funktion};
+    Send_Menue[11]={"cmd3",{NEC_T,0x00,0x16},Funktion};
+    Send_Menue[12]={"cmd4",{NEC_T,0x00,0x0C},Funktion};
+    Send_Menue[13]={"cmd5",{NEC_T,0x00,0x18},Funktion};
+    Send_Menue[14]={"cmd6",{NEC_T,0x00,0x5E},Funktion};
+    Send_Menue[15]={"cmd7",{NEC_T,0x00,0x08},Funktion};
+    Send_Menue[16]={"cmd8",{NEC_T,0x00,0x1C},Funktion};
+    Send_Menue[17]={"cmd9",{NEC_T,0x00,0x5A},Funktion};
+    Send_Menue[18]={"cmd6",{NEC_T,0x00,0x42},Funktion};   
+    Send_Menue[19]={"cmd7",{NEC_T,0x00,0x52},Funktion};
+    Send_Menue[20]={"cmd8",{NEC_T,0x00,0x4A},Funktion};
+    Send_Menue[21]={"back",{NEC_T,0x00,0x00},Menue_Entry_Start};
     Serial.println(Send_Menue[0].name);
 
     //EmpfangenMenü anlegen ->  leere liste, da noch nichts empfagen wurde??

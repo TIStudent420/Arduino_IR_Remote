@@ -29,19 +29,20 @@ void setup() {
 }
 
 //globale Variablen
-int curr_menu_index = 0;  //Zähler für Aktuellen Menü eintrag
+int curr_menu_index = 0;  //Zähler -> Aktueller Menüeintrag
 enum Menue_Titles curr_Title = Menue_Entry_Greetings; //aktueller Menütitel (start mit Greetings)
-IRData_s *recived_data=nullptr;  //empfangene Daten vom reciever
+struct IRData_s *recived_data_ptr = nullptr;  //empfangene Daten vom reciever als Pointer (ist besser zum auswerten)
 bool write_flag = false; //später evtl durch überprüfung auf nullpointer von empfangenen Daten (recived_data)
 
 //Wenn Display_UP || Display_DOWN
 //neuen Menüeintrag auf display anzeigen (ermittelt über aktuellen Menü-Titel und aktuellen Index)
 void display_menu(){
   //Lokale Variablen
-  Menue_Entry_s curr_entry; //Speichervariable für aktuellen Menüeintrag
+  struct Menue_Entry_s curr_entry; //Speichervariable für aktuellen Menüeintrag
   String entry_text_1; //Bezeichnungen des Eintrages -> wird auf Display angezeigt
   String entry_text_2;
 
+  //TODO  Testausgabe entfernen
   Serial.print(" titel: ");
   Serial.print(curr_Title);
   Serial.print(" index: ");
@@ -68,13 +69,8 @@ void display_menu(){
 int check_menue_entry(){
   int err;
   //Menü eintrag überprüfen:
-  // -> folgt ein weiteres Menü?
-  // -> wenn nicht, dann folgt eine Funktion
-  // -> senden, empfangen oder callback??
-  Menue_Entry_s curr_entry;
-  curr_entry = Menue.Get_Entry(curr_Title,curr_menu_index);
-
-  Serial.println(curr_entry.followed_by);
+  // -> Folgeschritt auswerden
+  struct Menue_Entry_s curr_entry = Menue.Get_Entry(curr_Title,curr_menu_index);
 
   if(curr_entry.followed_by==Funktion){//es soll eine Funktion (senden oder empfangen ausgeführt werden)
     //callback oder andere Funktion ausführen
@@ -85,14 +81,15 @@ int check_menue_entry(){
         err = send_irremote(curr_entry);
        }else{
         Serial.println("schreiben");
-        Serial.println(recived_data->command);
         //neuer Eintrag
+        //TODO Pointer richtig auslesen!!!
         Menue_Entry_s new_entry={"get",{recived_data->protokoll},Menue_Entry_Start};
         //Eintrag Manipulieren
         Menue.Manipulate_Entry(Menue_Entry_Senden,curr_menu_index,new_entry);
         write_flag=false;
        }
-    }else if(curr_Title==Menue_Entry_Empfangen){
+    }
+    else if(curr_Title==Menue_Entry_Empfangen){
       //empfang-Schleife aufrufen
       err = recive_irremote();
       curr_Title=Menue_Entry_Senden;
@@ -158,18 +155,20 @@ int send_irremote(Menue_Entry_s curr_entry){
 }
 
 int recive_irremote(){
-  //Ladepunkte anzeigen
+
+  //Ladeanzeige
   lcd_display.Update_Display_Text("Empfangen",". . .");
-//  while (!(Drehschalter.Checkup(nullptr)==3)) //dauerschleife zum empfangen von Daten
-//  {
-//    if (IR_System.Recive(&recived_data)){
-//      Serial.println(recived_data.command);
-//      return 0;
-//    }
-//  }
-  //TODO: Dummy-daten wieder entfernen
-  recived_data={NEC_T,0x00,0x22};
-  return 0;
+  //TODO delay wieder entfernen, ist nur für Testzwecke da
+  delay(500); 
+  //Schleife zum Empfangen der Daten
+  while (true/*!(Drehschalter.Checkup(nullptr)==3)*/) //Unterbrechung durch Drehschalter möglich
+  {
+    if (IR_System.Recive(recived_data_ptr)) // bei empfagen, Pointer auf neue Daten, Funktion beenden
+      return 0;
+    
+  }
+
+  return 5;
 }
 
 void loop() {

@@ -25,11 +25,17 @@ void Sensor_Actor_System::Init(){
 
 //TODO: welchen Rückgabewert könnte es geben?
 bool Sensor_Actor_System::Recive(IRData_s *recived_data){
+    struct IRData_s recv_data; //Empfangene Daten (speicherplatz reservien)
     if (IRrecv_OS_1838B.decode()) {
       //recived_data=IRrecv_OS_1838B.decodedIRData;
       IRrecv_OS_1838B.printIRResultShort(&Serial);
       IRrecv_OS_1838B.printIRSendUsage(&Serial);
       IRrecv_OS_1838B.resume();
+
+      //Daten übertragen
+      recv_data={NEC_T,0x00,0x12};
+
+      recived_data = &recv_data; //Zeiger auf empfanene daten
 
       return true; //Rückgabewert mit Informationen zum Senden
     }
