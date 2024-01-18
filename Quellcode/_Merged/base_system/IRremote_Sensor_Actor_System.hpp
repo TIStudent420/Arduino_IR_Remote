@@ -11,8 +11,8 @@ public:
   void Init();
 
 
-  int Recive(IRData_s *recived_data);
-  void Send();
+  bool Recive(IRData_s *recived_data);
+  void Send(int adr, int cmd, int repeats);
   
 private:
   int Pin_Recv;

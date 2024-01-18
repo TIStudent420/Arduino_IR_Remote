@@ -12,7 +12,7 @@ public:
   RE_Input_Control(int clk_pin, int dt_pin, int sw_pin); //Konstruktor
   void Init(); //Initilisierungs funktion
 
-  void Checkup(Controls_Callback callback);
+  int Checkup(Controls_Callback callback);
   
 private:
   int Pin_SW;

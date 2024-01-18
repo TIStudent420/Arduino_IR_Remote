@@ -12,7 +12,7 @@ void RE_Input_Control::Init(){
   digitalWrite(Pin_SW,HIGH); //Pullup, damit nicht ständig triggert
 }
 
-void RE_Input_Control::Checkup(Controls_Callback callback){
+int RE_Input_Control::Checkup(Controls_Callback callback){
   //Zum rauf und runter des Encoder:
   //  - mit einem Step inkementiert der Encoder (drehschalter) um 4 
   //  - dadurch wird mit einem Schritt 4mal inkrementiert
@@ -24,14 +24,14 @@ void RE_Input_Control::Checkup(Controls_Callback callback){
     //nach_oben-Funktion in der Steuerung/Display-Anwendung
     callback(Display_UP);
     Serial.println("UP");
-    return;
+    return 1;
   }
   else if(Rotary_Encoder_PC1.read()==-4){
     Rotary_Encoder_PC1.readAndReset();
     //nach_unten-Funktion in der Steuerung/Display-Anwendung
     callback(Display_DOWN);
     Serial.println("DOWN");
-    return;
+    return 2;
   }
   
   if(!digitalRead(Pin_SW)){
@@ -41,7 +41,7 @@ void RE_Input_Control::Checkup(Controls_Callback callback){
     //Auswählen-Funktion in der Steuerung/Display-Anwendung
     callback(Display_OK);
     Serial.println("OK");
-    return;
+    return 3;
   }
-  return;
+  return 0;
 }

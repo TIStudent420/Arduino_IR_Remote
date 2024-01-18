@@ -24,8 +24,8 @@ void Menue_Control_Layer::Init_Menue_Arrays(){
     Send_Menue[0]={"Ein/Aus",{NEC_T,0x00,0x45},Funktion};
     Send_Menue[1]={"Rot",{NEC_T,0x00,0x46},Funktion};
     Send_Menue[2]={"Blau",{NEC_T,0x00,0x15},Funktion};
-    Send_Menue[3]={"Grün",{NEC_T,0x00,0x47},Funktion};
-    Send_Menue[4]={"",{NEC_T,0x00,0x44},Funktion};
+    Send_Menue[3]={"Gruen",{NEC_T,0x00,0x47},Funktion};
+    Send_Menue[4]={"was?",{NEC_T,0x00,0x44},Funktion};
     Send_Menue[5]={"Vor>>",{NEC_T,0x00,0x43},Funktion};
     Send_Menue[6]={"Play/Pause",{NEC_T,0x00,0x40},Funktion};
     Send_Menue[7]={"cmd8",{NEC_T,0x00,0x07},Funktion};

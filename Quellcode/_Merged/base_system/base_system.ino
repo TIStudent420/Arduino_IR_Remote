@@ -81,8 +81,11 @@ int check_menue_entry(){
     if(curr_Title==Menue_Entry_Senden){
       //Sende-funktion aufrufen
       if(!write_flag){
+        Serial.println("senden");
         err = send_irremote(curr_entry);
        }else{
+        Serial.println("schreiben");
+        Serial.println(recived_data.command);
         //neuer Eintrag
         Menue_Entry_s new_entry={"get",recived_data,Menue_Entry_Start};
         //Eintrag Manipulieren
@@ -92,6 +95,8 @@ int check_menue_entry(){
     }else if(curr_Title==Menue_Entry_Empfangen){
       //empfang-Schleife aufrufen
       err = recive_irremote();
+      curr_Title=Menue_Entry_Senden;
+      write_flag=true;
   }
   }else{  
     curr_Title=curr_entry.followed_by;
@@ -128,6 +133,10 @@ void base_system(Display_Commands cmd){
 
         //index zurückstezten
         curr_menu_index = 0;
+        
+        //schreibe-flag zurücksetzten
+        //write_flag = false;
+        
         //Menü zurücksetzten
         //curr_Title = Menue_Entry_Greetings;
         break;
@@ -140,31 +149,27 @@ void base_system(Display_Commands cmd){
 }
 
 int send_irremote(Menue_Entry_s curr_entry){
-  Menue.Get_Entry(curr_Title, curr_menu_index);
+  
   Serial.println(curr_entry.data.protocol);
   Serial.println(curr_entry.data.command);
 
+  IR_System.Send(0x00,curr_entry.data.command,5);
   return 0;
 }
 
 int recive_irremote(){
-  int err = 0;
-  String loading_text ="";
-  while (!err) //dauerschleife zum empfangen von Daten
-  {
-    //err = IR_System.Recive(&recived_data);
-    //Punkte anzeigen
-    if (loading_text=="...") loading_text="";
-    
-    loading_text = loading_text +".";
-    lcd_display.Update_Display_Text(loading_text," ");
-    
-    recived_data={UNKNOWN_T,0,0x01};
-  }
-  //epmfanegnen Eintrag abspeichern
-  curr_Title=Menue_Entry_Senden;
-  write_flag=true;
-  return err;
+  //Ladepunkte anzeigen
+  lcd_display.Update_Display_Text("Empfangen",". . .");
+//  while (!(Drehschalter.Checkup(nullptr)==3)) //dauerschleife zum empfangen von Daten
+//  {
+//    if (IR_System.Recive(&recived_data)){
+//      Serial.println(recived_data.command);
+//      return 0;
+//    }
+//  }
+  //TODO: Dummy-daten wieder entfernen
+  recived_data={NEC_T,0x00,0x22};
+  return 0;
 }
 
 void loop() {
