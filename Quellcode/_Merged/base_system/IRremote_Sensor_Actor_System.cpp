@@ -1,5 +1,6 @@
-#include "IRremote_Sensor_Actor_System.hpp"
+//#include <memory>
 
+#include "IRremote_Sensor_Actor_System.hpp"
 #include <IRremote.h>
 #include "base_definitions.h"
 
@@ -24,7 +25,7 @@ void Sensor_Actor_System::Init(){
 }
 
 //TODO: welchen Rückgabewert könnte es geben?
-bool Sensor_Actor_System::Recive(IRData_s *recived_data){
+bool Sensor_Actor_System::Recive(IRData_s* recived_data){
     struct IRData_s recv_data; //Empfangene Daten (speicherplatz reservien)
     if (IRrecv_OS_1838B.decode()) {
       //recived_data=IRrecv_OS_1838B.decodedIRData;
@@ -32,14 +33,21 @@ bool Sensor_Actor_System::Recive(IRData_s *recived_data){
       IRrecv_OS_1838B.printIRSendUsage(&Serial);
       IRrecv_OS_1838B.resume();
 
-      //Daten übertragen
-      recv_data={NEC_T,0x00,0x12};
+      //TODO: nach dem erzeugen muss ich das wieder vernichten
+      recived_data = new IRData_s();//Zeiger auf empfanene daten
 
-      recived_data = &recv_data; //Zeiger auf empfanene daten
+      //Daten übertragen 
+      //TODO: Dummy-Daten entfernen
+      recived_data->protocol=NEC_e;
+      recived_data->command=0x14;
 
       return true; //Rückgabewert mit Informationen zum Senden
     }
+    else
+    {
+    recived_data = nullptr;
     return false;
+    }
 }
 
 //TODO: welche Informationen brauche ich zum Senden?
@@ -47,6 +55,7 @@ bool Sensor_Actor_System::Recive(IRData_s *recived_data){
 //Command
 //
 //-> ist der Rüchgabewert des Recivers und ebenfalls sollte dies der Wert/Strucktur sein, welche im Menü gespeichert ist.
-void Sensor_Actor_System::Send(int adr, int cmd, int repeats){
+int Sensor_Actor_System::Send(int adr, int cmd, int repeats){
   irsend.sendNEC(adr, cmd, repeats);
+  return 0;
 }

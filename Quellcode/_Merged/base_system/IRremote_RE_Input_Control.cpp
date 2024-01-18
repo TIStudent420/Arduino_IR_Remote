@@ -22,13 +22,13 @@ int RE_Input_Control::Checkup(Controls_Callback callback){
   if(Rotary_Encoder_PC1.read()==4){
     Rotary_Encoder_PC1.readAndReset();
     //nach_oben-Funktion in der Steuerung/Display-Anwendung
-    callback(Display_UP);
+    callback(DISPLAY_UP_e);
     return 1;
   }
   else if(Rotary_Encoder_PC1.read()==-4){
     Rotary_Encoder_PC1.readAndReset();
     //nach_unten-Funktion in der Steuerung/Display-Anwendung
-    callback(Display_DOWN);
+    callback(DISPLAY_DOWN_e);
     return 2;
   }
   
@@ -37,7 +37,7 @@ int RE_Input_Control::Checkup(Controls_Callback callback){
     //-> würde sonst mehrmals auslösen
     delay(200);
     //Auswählen-Funktion in der Steuerung/Display-Anwendung
-    callback(Display_OK);
+    callback(DISPLAY_OK_e);
     return 3;
   }
   return 0;

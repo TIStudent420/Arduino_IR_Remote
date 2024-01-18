@@ -28,7 +28,7 @@ void Display_Control_System::Update_Display_Text(String text_1, String text_2) {
   lcd.clear();
   //Text anzeigen (text1 -> Zeile 1) (text2 -> Zeile 2)
   lcd.setCursor(0, 0);
-  lcd.print("->" + text_1);
+  lcd.print(text_1);
   lcd.setCursor(0, 1);
   lcd.print(text_2);
   return;

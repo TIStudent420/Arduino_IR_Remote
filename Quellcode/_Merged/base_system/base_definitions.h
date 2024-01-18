@@ -42,68 +42,37 @@
 #endif
 
 enum Display_Commands{
-  Display_UP =0,
-  Display_DOWN=1,
-  Display_OK=2
+  DISPLAY_UP_e =0,
+  DISPLAY_DOWN_e=1,
+  DISPLAY_OK_e=2
 };
 
 // jedes Enum staht für ein Menü
 // jedes dieser Menüs hat Unterpunkte
 // die anzahl, bezeichnung und funktion der Unterpunkte ist in der Menue_Control_Layer Implementiert
-enum Menue_Titles{
-  Menue_Entry_Greetings = 0,
-  Funktion,
-  Menue_Entry_Start,
-  Menue_Entry_Senden,
-  Menue_Entry_Empfangen,
-  Menue_Entry_Saved,
+enum Menu_Titles{
+  Funktion=0,
+  MENU_TITLE_GREETINGS_e,
+  MENU_TITLE_START_e,
+  MENU_TITLE_SEND_e,
+  MENU_TITLE_RECEIVE_e
 };
 
 enum protokoll_type_t {
-    UNKNOWN_T = 0,
-    PULSE_WIDTH_T,
-    PULSE_DISTANCE_t,
-    APPLE_t,
-    DENON_t,
-    JVC_t,
-    LG_t,
-    LG2_t,
-    NEC_T,
-    NEC2_T, /* NEC with full frame as repeat */
-    ONKYO_T,
-    PANASONIC_T,
-    KASEIKYO_T,
-    KASEIKYO_DENON_T,
-    KASEIKYO_SHARP_T,
-    KASEIKYO_JVC_T,
-    KASEIKYO_MITSUBISHI_t,
-    RC5_T,
-    RC6_t,
-    SAMSUNG_T,
-    SAMSUNG48_T,
-    SAMSUNG_LG_T,
-    SHARP_T,
-    SONY_T,
-    /* Now the exotic protocols */
-    BANG_OLUFSEN_t,
-    BOSEWAVE_T,
-    LEGO_PF_T,
-    MAGIQUEST_T,
-    WHYNTER_T,
-    FAST_T
+    UNKNOWN_e = 0,
+    NEC_e,
 } ;
 
 //Struckut zum senden und empfanegn von daten
 struct IRData_s {
     protokoll_type_t protocol; ///< UNKNOWN, NEC, SONY, RC5, PULSE_DISTANCE, ...
-    uint16_t address; ///< Decoded address, Distance protocol (tMarkTicksLong (if tMarkTicksLong == 0, then tMarkTicksShort) << 8) | tSpaceTicksLong
     uint16_t command;       ///< Decoded command, Distance protocol (tMarkTicksShort << 8) | tSpaceTicksShort
 };
 
-struct Menue_Entry_s{  //Struktur eines Menü-Eintrages
+struct Menu_Entry_s{  //Struktur eines Menü-Eintrages
   String name;
   IRData_s data;
-  enum Menue_Titles followed_by;
+  enum Menu_Titles followed_by;
 };
 
 #endif //BASE_DEFINITIONS_H
