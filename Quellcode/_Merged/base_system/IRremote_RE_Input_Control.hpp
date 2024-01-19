@@ -3,7 +3,13 @@
 
 #include <Encoder.h> //Encoder-Bibliothek im Quellcode-Ordner
 
-//RE = Rotary Encoder (Bauteilbezeichnung)
+
+/**
+ * # RE_Input_Control Klasse
+ * @brief Diese Klasse implementiert Funktionen des RotaryEncoder (aus Arduino Bibliothek)
+ * @brief Der RE dient als Eingabe um durch das Menü zu navigieren 
+ * @note RE = Rotary Encoder (Bauteilbezeichnung)
+*/
 class RE_Input_Control{
 public:
   //Callback für Displaysteuerung (Funktion wird nach Eingabe über Drehschalter aufgerufen)

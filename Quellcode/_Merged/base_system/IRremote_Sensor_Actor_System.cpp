@@ -15,6 +15,10 @@ Sensor_Actor_System::Sensor_Actor_System(int recv_pin, int recv_feedback_pin, in
   Pin_Send_Feedback=send_feedback_pin;
 }
 
+/**
+ * # Sensor_Actor_System::Init
+ * @brief Initialisierungsfunktion für Sensor und IR-Diode sowie Feedback LEDs
+*/
 void Sensor_Actor_System::Init(){
   //Empfänger init:
   IRrecv_OS_1838B.enableIRIn();
@@ -26,7 +30,7 @@ void Sensor_Actor_System::Init(){
 }
 
 /**
- * # Recive
+ * # Sensor_Actor_System::Recive
  * @note überprüft den Sensor
  * @return true: wenn daten erkannt wurden; 
  * @return false: wenn keine Daten empfangen werden konnten
@@ -40,7 +44,7 @@ bool Sensor_Actor_System::Recive(IRData_s* recived_data){
       IRrecv_OS_1838B.printIRSendUsage(&Serial);
       IRrecv_OS_1838B.resume();
 
-      recived_data = new IRData_s();//Zeiger auf empfanene daten; neuen Speicherplatz allocieren, wird nach abspeichern wieder gelöscht
+      recived_data = new IRData_s();  //Zeiger auf empfanene daten; neuen Speicherplatz allocieren, wird nach abspeichern wieder gelöscht
 
       //Daten übertragen 
       //TODO: Dummy-Daten entfernen
@@ -60,14 +64,13 @@ bool Sensor_Actor_System::Recive(IRData_s* recived_data){
 
 /**
  * # Send
- * @note sendet das angegebene Commando 
+ * @brief sendet das angegebene Commando 
  * @param protokoll Art des Protokolls
  * @param adr addressse ict irgendwie immer 0
  * @param cmd der Command ist das entscheidende
  * @param repeats häufigkeit der Wiederhohlungen
- * 
- * @return 12 gesendet per NEC protokoll
- * @return -77, wenn Protokoll nicht erkannt oder Unbekannt
+ * @return 12-gesendet per NEC protokoll;
+ * @return  -77-wenn Protokoll nicht erkannt oder Unbekannt
 */
 int Sensor_Actor_System::Send(protokoll_type_t protokoll, int adr, int cmd, int repeats){
   switch (protokoll){

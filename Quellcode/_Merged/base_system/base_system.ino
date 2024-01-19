@@ -145,7 +145,6 @@ int send_irremote(Menu_Entry_s *curr_entry){
 int recive_irremote(){
 
   lcd_display.Update_Display_Text("Empfangen",". . .");  //Ladeanzeige
-  delay(500);                                            //TODO delay wieder entfernen, ist nur für Testzwecke da
   
   while (IR_System.Recive(received_data_ptr)) //Schleife zum Empfangen der Daten
   {
