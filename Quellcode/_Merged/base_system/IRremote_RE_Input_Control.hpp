@@ -6,16 +6,18 @@
 //RE = Rotary Encoder (Bauteilbezeichnung)
 class RE_Input_Control{
 public:
-  //Callback für Displaysteuerung
+  //Callback für Displaysteuerung (Funktion wird nach Eingabe über Drehschalter aufgerufen)
   using Controls_Callback = void (*)(int);
-  
-  RE_Input_Control(int clk_pin, int dt_pin, int sw_pin); //Konstruktor
-  void Init(); //Initilisierungs funktion
 
+  //Konstruktor
+  RE_Input_Control(int clk_pin, int dt_pin, int sw_pin); 
+  void Init();
   int Checkup(Controls_Callback callback);
   
 private:
-  int Pin_SW;
+  //Pin für Knopf des Drehschalters
+  int Pin_SW;  
+  //Drehschalter-Klasse aus Bibliothek (Encoder.h)
   Encoder Rotary_Encoder_PC1;
 };
 

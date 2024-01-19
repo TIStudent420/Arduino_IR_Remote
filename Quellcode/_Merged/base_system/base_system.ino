@@ -57,10 +57,14 @@ void display_menu(){     //Wenn DISPLAY_UP_e || DISPLAY_DOWN_e
  * @return 66 receivevorgang normal beendet;
  * @return -77, wenn Protokoll nicht erkannt oder Unbekannt;
  * @return 12 gesendet per NEC protokoll;
+ * @return -38 Menüeintrag konnte nicht korrekt abgerufen werden
 */
 int check_menue_entry(){
   int ret=0;
   curr_entry = Menu.Get_Entry(curr_Title,curr_menu_index);  //Aktuellen Menüeintrag hohlen
+
+  if(curr_entry == nullptr)
+    return -38;
 
   if(curr_entry->followed_by==FUNKTION_e){  //Menüeintrag: soll als Nachfolger eine Funktion ausführen 
     switch (curr_Title){                 //Switch über den Aktuellen Menü-Titel

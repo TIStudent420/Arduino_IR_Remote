@@ -22,18 +22,18 @@
 
 class Display_Control_System {
 public:
-  Display_Control_System(int rs_pin, int e_pin,int d4_pin,int d5_pin,int d6_pin,int d7_pin);  //Konstruktor
+  //Konstruktor
+  Display_Control_System(int rs_pin, int e_pin,int d4_pin,int d5_pin,int d6_pin,int d7_pin); 
+  
+  //Initilisierungsfunktion
+  void Init();  
 
-  void Init();  //Initilisierungs funktion
-
-  void Update_Display_Text(String text_1, String text_2); //Textausgabe auf Display
+  //Textausgabe auf Display (2 Zeilen, nicht mehr als 16 Zeichen pro Zeile!)
+  void Update_Display_Text(String text_1, String text_2); 
 
 private:
-  LiquidCrystal lcd;  //Display-Klasse (Bibliothek)
-
-  int current_Menu;
-  int Menu_Index;
-  int cursor_Position;
+  //Display-Klasse (LiquidCrystal - Bibliothek)
+  LiquidCrystal lcd;  
 };
 
 #endif  //IRremote_DISPLAY_CONTROO_SYSTEM_HPP

@@ -2,14 +2,8 @@
 #include "base_definitions.h"
 #include "IRremote_Display_Control_System.hpp"
 
-//Konstruktor implementieren
 Display_Control_System::Display_Control_System(int rs_pin, int e_pin, int d4_pin, int d5_pin, int d6_pin, int d7_pin)
   :lcd(rs_pin, e_pin, d4_pin, d5_pin, d6_pin, d7_pin) {
-
-  current_Menu = 1;
-  cursor_Position = 0;
-  Menu_Index = 0;
-
 }
 
 void Display_Control_System::Init() {

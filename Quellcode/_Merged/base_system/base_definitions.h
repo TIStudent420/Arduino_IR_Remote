@@ -4,8 +4,10 @@
 
 #include <Arduino.h>
 
-//Pinzuweisung basiert auf dem jeweiligen verwendeten Board (nicht so wichtig)
-//   RE => Rotary Encoder
+/**
+ * # Pindefinitionen
+ * @note Pindefinitionen werden vor dem Compilieren für das entsprechende Board freigeschaltet
+*/
 #if defined(__AVR_ATmega328P__)  // Arduino Uno
   #define Pin_RE_CLK  4   // Drehschalter (RE) Clock Pin 
   #define Pin_RE_DT   3   // Drehschalter (RE) Daten Pin
@@ -38,18 +40,23 @@
   #define Pin_IR_LED_FEEDBACK 0 // Signal-LED für das Senden von Daten
   #pragma message("Pins for Arduino Leonardo enabled") //Info in Kompielerausgabe, welches Board erkannt wurde
 #else
-  #error "Unbekanntes Board"
+  #error "Pins für asugewühltes Board noch nicht definiert"
 #endif
 
+/**
+ * # Display_Commands
+ * @note zum Idendifizieren der Eingabe des Drehschalters
+*/
 enum Display_Commands{
   DISPLAY_UP_e =0,
   DISPLAY_DOWN_e=1,
   DISPLAY_OK_e=2
 };
 
-// jedes Enum staht für ein Menü
-// jedes dieser Menüs hat Unterpunkte
-// die anzahl, bezeichnung und funktion der Unterpunkte ist in der Menue_Control_Layer Implementiert
+/**
+ * # Menu_Titles
+ * @note Titel/Überschriften zum Idendifizieren der einzelnen Menüs
+*/
 enum Menu_Titles{
   FUNKTION_e=0,
   MENU_TITLE_GREETINGS_e,
@@ -58,18 +65,29 @@ enum Menu_Titles{
   MENU_TITLE_RECEIVE_e
 };
 
+/**
+ * # protokoll_type_t
+ * @note Infrarot Protokolle (aus der IR-Bibliothek)
+*/
 enum protokoll_type_t {
     UNKNOWN_e = 0,
     NEC_e,
 } ;
 
-//Struckut zum senden und empfanegn von daten
+/**
+ * # IRData_s
+ * @note Datenstrucktur, Wichtigste Daten zu Senden/Empfangen
+*/
 struct IRData_s {
-    protokoll_type_t protocol; ///< UNKNOWN, NEC, SONY, RC5, PULSE_DISTANCE, ...
-    uint16_t command;       ///< Decoded command, Distance protocol (tMarkTicksShort << 8) | tSpaceTicksShort
+    protokoll_type_t protocol;  // UNKNOWN, NEC, SONY, RC5, PULSE_DISTANCE, ...
+    uint16_t command;           // Kommando
 };
 
-struct Menu_Entry_s{  //Struktur eines Menü-Eintrages
+/**
+ * # Menu_Entry_s
+ * @note Datestrucktur für einen Menüeintrag
+*/
+struct Menu_Entry_s{
   String name;
   IRData_s data;
   enum Menu_Titles followed_by;
