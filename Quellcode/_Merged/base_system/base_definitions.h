@@ -51,7 +51,7 @@ enum Display_Commands{
 // jedes dieser Menüs hat Unterpunkte
 // die anzahl, bezeichnung und funktion der Unterpunkte ist in der Menue_Control_Layer Implementiert
 enum Menu_Titles{
-  Funktion=0,
+  FUNKTION_e=0,
   MENU_TITLE_GREETINGS_e,
   MENU_TITLE_START_e,
   MENU_TITLE_SEND_e,

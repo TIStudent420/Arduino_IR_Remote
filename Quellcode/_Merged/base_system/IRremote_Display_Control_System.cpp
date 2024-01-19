@@ -17,12 +17,6 @@ void Display_Control_System::Init() {
   lcd.begin(16, 2);
 }
 
-
-// Funktion zum Aktualisieren der Werte-Liste an einem bestimmten Index
-void Display_Control_System::UpdateValuesAtIndex(int index, int value) {
-  Update_Values(index, value);
-}
-
 void Display_Control_System::Update_Display_Text(String text_1, String text_2) {
   //clear Display
   lcd.clear();

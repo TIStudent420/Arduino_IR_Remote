@@ -12,7 +12,7 @@ public:
 
 
   bool Recive(IRData_s* recived_data);
-  int Send(int adr, int cmd, int repeats);
+  int Send(protokoll_type_t protokoll,int adr, int cmd, int repeats);
   
 private:
   int Pin_Recv;

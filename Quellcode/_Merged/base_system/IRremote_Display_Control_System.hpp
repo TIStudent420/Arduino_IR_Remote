@@ -27,7 +27,6 @@ public:
   void Init();  //Initilisierungs funktion
 
   void Update_Display_Text(String text_1, String text_2); //Textausgabe auf Display
-  void UpdateValuesAtIndex(int index, int value);
 
 private:
   LiquidCrystal lcd;  //Display-Klasse (Bibliothek)
@@ -35,8 +34,6 @@ private:
   int current_Menu;
   int Menu_Index;
   int cursor_Position;
-
-  void Update_Values(int index, int value);
 };
 
 #endif  //IRremote_DISPLAY_CONTROO_SYSTEM_HPP
