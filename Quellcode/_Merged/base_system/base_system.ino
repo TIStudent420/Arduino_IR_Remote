@@ -1,5 +1,5 @@
 #include <stdint.h>
-//#include <memory> //wie geht das in Arduino IDE??
+#include <Arduino.h>
 
 #include "base_definitions.h"                   //Pin-definitionen, Enum für Displayschnittstelle, Enum und Strucktur für Menüeinträge, Enum und Struckturen für IR-Daten
 #include "IRremote_RE_Input_Control.hpp"        //Steuerung/Eingabe
@@ -23,6 +23,7 @@ struct IRData_s *received_data_ptr = nullptr;                 //empfangene Daten
 //Initialisierungsfunktion
 void setup() {
   Serial.begin(9600);   //Serielle Kommunikation;
+  Serial.println("Setup");
   lcd_display.Init();   //Display
   Drehschalter.Init();  //Drehschlater
   IR_System.Init();     //IR-Sender und Empfänger
@@ -44,6 +45,19 @@ void display_menu(){     //Wenn DISPLAY_UP_e || DISPLAY_DOWN_e
   
   lcd_display.Update_Display_Text(entry_text[0],entry_text[1]);
 
+  //TODO: Testausgabe:
+  Serial.println("Text 1: "+entry_text[0]);
+  Serial.println("Text 2: "+entry_text[1]);
+  Serial.print("Index: "); Serial.println(curr_menu_index);
+  Serial.print("Titel: "); Serial.println(curr_Title);
+  
+  if(received_data_ptr==nullptr){
+    Serial.println("RecvPTR = 0");
+  }
+  else{
+    Serial.println("RecvPTR = Data");
+  }
+  
   return;
 }
 
@@ -73,19 +87,22 @@ int check_menue_entry(){
           ret = send_irremote(curr_entry);  //Senden Eines IR-Signals
         }  
         else{                                                                   //ich will neue Daten (kürzlich empfangen) abspeichern  
-          ret=Menu.Manipulate_Entry_from_Data(MENU_TITLE_SEND_e,curr_menu_index,received_data_ptr);
+          ret = Menu.Manipulate_Entry_from_Data(MENU_TITLE_SEND_e,curr_menu_index,received_data_ptr);
           delete received_data_ptr;                                             //Speicherplatz wieder freigeben
           received_data_ptr = nullptr;                                          //Zeiger auf Empfangene Daten zurücksetzen (sonst undefiniertes verhalten)
           curr_Title = MENU_TITLE_START_e;                                      //dann ins Start-Menü übergehen                                                          
-        }   
+        }
+        break;   
       }
       case (MENU_TITLE_RECEIVE_e):{
         curr_Title=MENU_TITLE_SEND_e;  //dann ins Sende-Menü übergehen
         ret = recive_irremote();      //empfang-Schleife aufrufen
+        break;
       }
       default:{
         curr_Title = MENU_TITLE_START_e;  //dann ins Start-Menü übergehen
         ret = -69;                       //Wenn du hier raus kommst, dann hast du vergessen, ein Menü hinzuzufügen
+        break;
       }
     }
   }
@@ -113,7 +130,6 @@ void base_system(Display_Commands cmd){
     }
     case DISPLAY_OK_e:{
         err = check_menue_entry();
-          Serial.println("Fehler beim ausführen der Funktion");  
         curr_menu_index = 0;  //index zurückstezten
         break;
     }
@@ -122,7 +138,7 @@ void base_system(Display_Commands cmd){
   }
 
   if(err) //Fehlermeldung ausgeben
-    Serial.println("Fehlerhaft beendet; err: " + err);
+    Serial.print("Fehlerhaft beendet; err: "); Serial.println(err);
 
   display_menu();  //display aktualisieren
   return;
@@ -151,7 +167,7 @@ int recive_irremote(){
     if(Drehschalter.Checkup(nullptr))  //Unterbrechung durch Drehschalter möglich
       return 5;                        //Abbruch durch Eingabe am Drehknopf   
   }
-
+  
   //neues Datenpaket erstellen?
   return 66;
 }

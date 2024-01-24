@@ -15,7 +15,7 @@ public:
 
   void Init();
 
-  bool Recive(IRData_s* recived_data);
+  bool Recive(IRData_s* received_data);
   int Send(protokoll_type_t protokoll,int adr, int cmd, int repeats);
   
 private:
