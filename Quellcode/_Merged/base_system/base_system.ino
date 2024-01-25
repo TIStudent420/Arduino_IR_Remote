@@ -168,7 +168,6 @@ int recive_irremote(){
       return 5;                        //Abbruch durch Eingabe am Drehknopf   
   }
   
-  //neues Datenpaket erstellen?
   return 66;
 }
 

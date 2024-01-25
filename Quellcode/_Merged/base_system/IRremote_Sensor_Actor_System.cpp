@@ -35,7 +35,7 @@ void Sensor_Actor_System::Init(){
  * @return true: wenn daten erkannt wurden; 
  * @return false: wenn keine Daten empfangen werden konnten
 */
-bool Sensor_Actor_System::Recive(IRData_s* received_data){
+bool Sensor_Actor_System::Recive(IRData_s*& received_data){
     struct IRData_s recv_data; //Empfangene Daten (speicherplatz reservien)
     if (IRrecv_OS_1838B.decode()) {
       //recived_data=IRrecv_OS_1838B.decodedIRData;//??
@@ -44,23 +44,22 @@ bool Sensor_Actor_System::Recive(IRData_s* received_data){
       IRrecv_OS_1838B.printIRSendUsage(&Serial);
       IRrecv_OS_1838B.resume();
 
-      received_data = new IRData_s();  //Zeiger auf empfanene daten; neuen Speicherplatz allocieren, wird nach abspeichern wieder gelöscht
+      //received_data = new IRData_s();  //Zeiger auf empfanene daten; neuen Speicherplatz allocieren, wird nach abspeichern wieder gelöscht
 
       //Daten übertragen 
       //TODO: Dummy-Daten entfernen
-      received_data->protocol=NEC_e;
-      received_data->command=0x14;
-
+      //received_data->protocol=NEC_e;
+      //received_data->command=0x14;
+      received_data = new IRData_s{NEC_e,0x14};
       return true; //Rückgabewert mit Informationen zum Senden
     }
     else
     {
       //TODO: pointer wieder auf null setzen
-      received_data = new IRData_s();
+      received_data = new IRData_s{NEC_e,0x14};
       //TODO: Dummy-Daten entfernen
-      received_data->protocol=NEC_e;
-      received_data->command=0x14;
-      //recived_data = nullptr;
+
+
       return false;
     }
 }
