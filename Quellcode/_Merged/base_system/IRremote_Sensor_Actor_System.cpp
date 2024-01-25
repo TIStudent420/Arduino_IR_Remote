@@ -20,13 +20,13 @@ Sensor_Actor_System::Sensor_Actor_System(int recv_pin, int recv_feedback_pin, in
  * @brief Initialisierungsfunktion für Sensor und IR-Diode sowie Feedback LEDs
 */
 void Sensor_Actor_System::Init(){
+  printActiveIRProtocols(&Serial);
   //Empfänger init:
   IRrecv_OS_1838B.enableIRIn();
   IRrecv_OS_1838B.begin(Pin_Recv,true,Pin_Recv_Feedback); 
-  printActiveIRProtocols(&Serial);
   //Sender init:
   //pinMode(LED_BUILTIN, OUTPUT);  //FeedbackLED auf OUtput schalten?? 
-  irsend.begin(Pin_IR_LED,true,Pin_IR_LED_FEEDBACK);
+  //irsend.begin(Pin_IR_LED,true,Pin_IR_LED_FEEDBACK);
 }
 
 /**
@@ -51,16 +51,16 @@ bool Sensor_Actor_System::Recive(IRData_s*& received_data){
       //received_data->protocol=NEC_e;
       //received_data->command=0x14;
       received_data = new IRData_s{NEC_e,0x14};
-      return true; //Rückgabewert mit Informationen zum Senden
+      return false; //Rückgabewert mit Informationen zum Senden
     }
     else
     {
       //TODO: pointer wieder auf null setzen
-      received_data = new IRData_s{NEC_e,0x14};
+      received_data = nullptr;
       //TODO: Dummy-Daten entfernen
 
 
-      return false;
+      return true;
     }
 }
 
@@ -79,7 +79,7 @@ bool Sensor_Actor_System::Recive(IRData_s*& received_data){
 int Sensor_Actor_System::Send(protokoll_type_t protokoll, int adr, int cmd, int repeats){
   switch (protokoll){
     case NEC_e:{
-      irsend.sendNEC(adr, cmd, repeats);
+      //irsend.sendNEC(adr, cmd, repeats);
       return 12;
     }
     case UNKNOWN_e:
