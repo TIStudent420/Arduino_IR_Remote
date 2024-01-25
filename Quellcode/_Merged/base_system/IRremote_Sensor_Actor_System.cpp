@@ -25,8 +25,8 @@ void Sensor_Actor_System::Init(){
   IRrecv_OS_1838B.enableIRIn();
   IRrecv_OS_1838B.begin(Pin_Recv,true,Pin_Recv_Feedback); 
   //Sender init:
-  //pinMode(LED_BUILTIN, OUTPUT);  //FeedbackLED auf OUtput schalten?? 
-  //irsend.begin(Pin_IR_LED,true,Pin_IR_LED_FEEDBACK);
+  //pinMode(Pin_IR_LED_FEEDBACK, OUTPUT);  //FeedbackLED auf OUtput schalten?? 
+  irsend.begin(Pin_IR_LED,true,Pin_IR_LED_FEEDBACK);
 }
 
 /**
@@ -44,28 +44,19 @@ bool Sensor_Actor_System::Recive(IRData_s*& received_data){
       IRrecv_OS_1838B.printIRSendUsage(&Serial);
       IRrecv_OS_1838B.resume();
 
-      //received_data = new IRData_s();  //Zeiger auf empfanene daten; neuen Speicherplatz allocieren, wird nach abspeichern wieder gelöscht
-
       //Daten übertragen 
-      //TODO: Dummy-Daten entfernen
-      //received_data->protocol=NEC_e;
-      //received_data->command=0x14;
-      received_data = new IRData_s{NEC_e,0x14};
+      //TODO:  Protokollauswertung??? IRrecv_OS_1838B.decodedIRData.command
+      received_data = new IRData_s{NEC_e,IRrecv_OS_1838B.decodedIRData.command}; //Zeiger auf empfanene daten; neuen Speicherplatz allocieren, wird nach abspeichern wieder gelöscht
       return false; //Rückgabewert mit Informationen zum Senden
     }
     else
     {
-      //TODO: pointer wieder auf null setzen
       received_data = nullptr;
-      //TODO: Dummy-Daten entfernen
-
-
       return true;
     }
 }
 
-//TODO: Implementierung für Weiter Protokolle
-
+//TODO: Implementierung für Weiter Protokolle ??
 /**
  * # Send
  * @brief sendet das angegebene Commando 
@@ -79,11 +70,13 @@ bool Sensor_Actor_System::Recive(IRData_s*& received_data){
 int Sensor_Actor_System::Send(protokoll_type_t protokoll, int adr, int cmd, int repeats){
   switch (protokoll){
     case NEC_e:{
-      //irsend.sendNEC(adr, cmd, repeats);
+      Serial.println("NEC_e Senden...");
+      irsend.sendNEC(adr, cmd, repeats);
       return 12;
     }
     case UNKNOWN_e:
     default:
+    Serial.println("nicht Senden...");
       return -77;
   }
 }

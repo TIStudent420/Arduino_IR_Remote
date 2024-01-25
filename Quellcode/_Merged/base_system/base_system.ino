@@ -89,10 +89,10 @@ int check_menue_entry(){
         else{                                                                   //ich will neue Daten (kürzlich empfangen) abspeichern  
           ret = Menu.Manipulate_Entry_from_Data(MENU_TITLE_SEND_e,curr_menu_index,received_data_ptr);
           delete received_data_ptr;                                             //Speicherplatz wieder freigeben
-          received_data_ptr = nullptr;                                          //Zeiger auf Empfangene Daten zurücksetzen (sonst undefiniertes verhalten)
           curr_Title = MENU_TITLE_START_e;                                      //dann ins Start-Menü übergehen                                                          
         }
-        break;   
+        received_data_ptr = nullptr;                                            //Zeiger auf Empfangene Daten zurücksetzen (sonst undefiniertes verhalten)
+        break;    
       }
       case (MENU_TITLE_RECEIVE_e):{
         curr_Title=MENU_TITLE_SEND_e;  //dann ins Sende-Menü übergehen
@@ -151,6 +151,7 @@ void base_system(Display_Commands cmd){
 */
 int send_irremote(Menu_Entry_s *curr_entry){
   //TODO: Protokoll auswertung fehlt noch (NEC_e,Sony...)
+  Serial.println("Signal wird gesendet");
   return IR_System.Send(NEC_e,0x00,curr_entry->data.command,5);
 }
 
@@ -167,6 +168,10 @@ int recive_irremote(){
     if(Drehschalter.Checkup(nullptr))  //Unterbrechung durch Drehschalter möglich
       return 5;                        //Abbruch durch Eingabe am Drehknopf   
   }
+
+  Serial.println("==Neue Daten: ==");
+  Serial.print("Protokoll: ");Serial.println(received_data_ptr->protocol);
+  Serial.print("Command: ");Serial.println(received_data_ptr->command);
   
   return 66;
 }
