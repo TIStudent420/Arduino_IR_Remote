@@ -24,6 +24,9 @@ void RE_Input_Control::Init(){
  * @return 1-up; 2-down; 3-ok 0; nichts ist passiert
 */
 int RE_Input_Control::Checkup(Controls_Callback callback){
+  if(callback == nullptr){
+    return 0;
+  }
   if(Rotary_Encoder_PC1.read()==4){
     Rotary_Encoder_PC1.readAndReset();
     callback(DISPLAY_UP_e);   //Übergebene Funktion mit Display-Kommando aufrufen

@@ -23,21 +23,25 @@ void Sensor_Actor_System::Init(){
   printActiveIRProtocols(&Serial);
   //Empfänger init:
   IRrecv_OS_1838B.enableIRIn();
+  pinMode(Pin_Recv_Feedback, OUTPUT);  //FeedbackLED auf OUtput schalten?? 
   IRrecv_OS_1838B.begin(Pin_Recv,true,Pin_Recv_Feedback); 
   //Sender init:
-  //pinMode(Pin_IR_LED_FEEDBACK, OUTPUT);  //FeedbackLED auf OUtput schalten?? 
-  irsend.begin(Pin_IR_LED,true,Pin_IR_LED_FEEDBACK);
+  pinMode(Pin_Send_Feedback, OUTPUT);  //FeedbackLED auf OUtput schalten?? 
+  irsend.begin(Pin_Send,true,Pin_Send_Feedback);
 }
 
 /**
  * # Sensor_Actor_System::Recive
  * @note überprüft den Sensor
- * @return true: wenn daten erkannt wurden; 
- * @return false: wenn keine Daten empfangen werden konnten
+ * @return true: wenn daten erkannt wurden; -> bedeutet, schleife kann weiter gehen
+ * @return false: wenn keine Daten empfangen werden konnten -> bedeutet, schleife beenden
 */
 bool Sensor_Actor_System::Recive(IRData_s*& received_data){
     struct IRData_s recv_data; //Empfangene Daten (speicherplatz reservien)
     if (IRrecv_OS_1838B.decode()) {
+      if(IRrecv_OS_1838B.decodedIRData.protocol==UNKNOWN){  //Falsche Daten
+        return true;
+      }
       //recived_data=IRrecv_OS_1838B.decodedIRData;//??
       //Ausgabe der Empfangenen Daten
       IRrecv_OS_1838B.printIRResultShort(&Serial);

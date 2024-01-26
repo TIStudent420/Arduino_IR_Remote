@@ -151,8 +151,13 @@ void base_system(Display_Commands cmd){
 */
 int send_irremote(Menu_Entry_s *curr_entry){
   //TODO: Protokoll auswertung fehlt noch (NEC_e,Sony...)
+  digitalWrite(Pin_IR_LED_FEEDBACK, HIGH);  //Feedback LED anschalten
+  lcd_display.Update_Display_Text("Senden",". . .");  //Ladeanzeige
   Serial.println("Signal wird gesendet");
-  return IR_System.Send(NEC_e,0x00,curr_entry->data.command,5);
+  int ret= IR_System.Send(NEC_e,0x00,curr_entry->data.command,5);
+  delay(100);
+  digitalWrite(Pin_IR_LED_FEEDBACK, LOW);  //Feedback LED anschalten
+  return ret;
 }
 
 /**
@@ -160,19 +165,24 @@ int send_irremote(Menu_Entry_s *curr_entry){
  * @return 66 receivevorgang normal beendet
 */
 int recive_irremote(){
+  
+  digitalWrite(Pin_IR_RECV_FEEDBACK, HIGH);  //Feedback LED anschalten
 
   lcd_display.Update_Display_Text("Empfangen",". . .");  //Ladeanzeige
   
   while (IR_System.Recive(received_data_ptr)) //Schleife zum Empfangen der Daten
   {
-    if(Drehschalter.Checkup(nullptr))  //Unterbrechung durch Drehschalter möglich
-      return 5;                        //Abbruch durch Eingabe am Drehknopf   
+
+    if(Drehschalter.Checkup(nullptr)){       //Unterbrechung durch Drehschalter möglich
+      digitalWrite(Pin_IR_RECV_FEEDBACK, LOW);  //Feedback LED ausschalten
+      return 5;                              //Abbruch durch Eingabe am Drehknopf   
+    }
   }
 
   Serial.println("==Neue Daten: ==");
   Serial.print("Protokoll: ");Serial.println(received_data_ptr->protocol);
   Serial.print("Command: ");Serial.println(received_data_ptr->command);
-  
+  digitalWrite(Pin_IR_RECV_FEEDBACK, LOW);  //Feedback LED ausschalten  
   return 66;
 }
 
