@@ -10,24 +10,24 @@
 //Klassen initialisierungen
 RE_Input_Control Drehschalter(Pin_RE_CLK, Pin_RE_DT, Pin_RE_SW);                                      //Drehschalter-Klasse Initialisieren -> zum Steuern der Ein-/Ausgabe
 Display_Control_System lcd_display(Pin_LCD_RS,Pin_LCD_E,Pin_LCD_D4,Pin_LCD_D5,Pin_LCD_D6,Pin_LCD_D7); //Display-Klasse Initialisieren
-Menu_Control_Layer Menu;                                                                             //Menü
+Menu_Control_Layer Menu;                                                                              //Menü
 Sensor_Actor_System IR_System(Pin_IR_RECV,Pin_IR_RECV_FEEDBACK,Pin_IR_LED,Pin_IR_LED_FEEDBACK);       //Sender & Empfänger
 
 //globale Variablen                                     
 int curr_menu_index = 0;                               //Zähler -> Aktueller Menüeintrag
 enum Menu_Titles curr_Title = MENU_TITLE_GREETINGS_e;  //aktueller Menütitel (start mit Greetings)
-struct Menu_Entry_s *curr_entry;                        //Speichervariable für aktuellen Menüeintrag
-struct IRData_s *received_data_ptr = nullptr;                 //empfangene Daten vom reciever als Pointer (ist besser zum auswerten)
+struct Menu_Entry_s *curr_entry;                       //Speichervariable für aktuellen Menüeintrag
+struct IRData_s *received_data_ptr = nullptr;          //empfangene Daten vom reciever als Pointer (ist besser zum auswerten)
 
 
 //Initialisierungsfunktion
 void setup() {
-  Serial.begin(9600);   //Serielle Kommunikation;
+  Serial.begin(9600);      //Serielle Kommunikation;
   Serial.println("Setup");
-  lcd_display.Init();   //Display
-  Drehschalter.Init();  //Drehschlater
-  IR_System.Init();     //IR-Sender und Empfänger
-  display_menu();       //Display aktualisieren
+  lcd_display.Init();      //Display
+  Drehschalter.Init();     //Drehschlater
+  IR_System.Init();        //IR-Sender und Empfänger
+  display_menu();          //Display aktualisieren
 }
 
 /**
@@ -81,10 +81,10 @@ int check_menue_entry(){
     return -38;
 
   if(curr_entry->followed_by==FUNKTION_e){  //Menüeintrag: soll als Nachfolger eine Funktion ausführen 
-    switch (curr_Title){                 //Switch über den Aktuellen Menü-Titel
+    switch (curr_Title){                    //Switch über den Aktuellen Menü-Titel
       case MENU_TITLE_SEND_e:{
         if(received_data_ptr == nullptr){    //es wurden keine neuen Daten empfangen -> normales Senden          
-          ret = send_irremote(curr_entry);  //Senden Eines IR-Signals
+          ret = send_irremote(curr_entry);   //Senden Eines IR-Signals
         }  
         else{                                                                   //ich will neue Daten (kürzlich empfangen) abspeichern  
           ret = Menu.Manipulate_Entry_from_Data(MENU_TITLE_SEND_e,curr_menu_index,received_data_ptr);
@@ -96,17 +96,17 @@ int check_menue_entry(){
       }
       case (MENU_TITLE_RECEIVE_e):{
         curr_Title=MENU_TITLE_SEND_e;  //dann ins Sende-Menü übergehen
-        ret = recive_irremote();      //empfang-Schleife aufrufen
+        ret = recive_irremote();       //empfang-Schleife aufrufen
         break;
       }
       default:{
         curr_Title = MENU_TITLE_START_e;  //dann ins Start-Menü übergehen
-        ret = -69;                       //Wenn du hier raus kommst, dann hast du vergessen, ein Menü hinzuzufügen
+        ret = -69;                        //Wenn du hier raus kommst, dann hast du vergessen, ein Menü hinzuzufügen
         break;
       }
     }
   }
-  else{                                 //es folgt der Wechsel in ein anderes Menü 
+  else{                                    //es folgt der Wechsel in ein anderes Menü 
     curr_Title = curr_entry->followed_by;  //Menü-Titel Aktualisieren 
   }
   return ret;
@@ -119,8 +119,8 @@ void base_system(Display_Commands cmd){
 
   switch (cmd) {
     case DISPLAY_UP_e:{
-      if(!(checker==1))  //Index ist nicht auf Maximal 
-        curr_menu_index++; //-> Der index darf incrementiert werden
+      if(!(checker==1))     //Index ist nicht auf Maximal 
+        curr_menu_index++;  //-> Der index darf incrementiert werden
       break;
     }
     case DISPLAY_DOWN_e:{
@@ -137,7 +137,7 @@ void base_system(Display_Commands cmd){
       break;
   }
 
-  if(err) //Fehlermeldung ausgeben
+  if(err)  //Fehlermeldung ausgeben
     Serial.print("Fehlerhaft beendet; err: "); Serial.println(err);
 
   display_menu();  //display aktualisieren
@@ -151,7 +151,7 @@ void base_system(Display_Commands cmd){
 */
 int send_irremote(Menu_Entry_s *curr_entry){
   //TODO: Protokoll auswertung fehlt noch (NEC_e,Sony...)
-  digitalWrite(Pin_IR_LED_FEEDBACK, HIGH);  //Feedback LED anschalten
+  digitalWrite(Pin_IR_LED_FEEDBACK, HIGH);            //Feedback LED anschalten
   lcd_display.Update_Display_Text("Senden",". . .");  //Ladeanzeige
   Serial.println("Signal wird gesendet");
   int ret= IR_System.Send(NEC_e,0x00,curr_entry->data.command,5);
@@ -173,9 +173,9 @@ int recive_irremote(){
   while (IR_System.Recive(received_data_ptr)) //Schleife zum Empfangen der Daten
   {
 
-    if(Drehschalter.Checkup(nullptr)){       //Unterbrechung durch Drehschalter möglich
+    if(Drehschalter.Checkup(nullptr)){          //Unterbrechung durch Drehschalter möglich
       digitalWrite(Pin_IR_RECV_FEEDBACK, LOW);  //Feedback LED ausschalten
-      return 5;                              //Abbruch durch Eingabe am Drehknopf   
+      return 5;                                 //Abbruch durch Eingabe am Drehknopf   
     }
   }
 
